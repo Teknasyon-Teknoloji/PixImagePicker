@@ -113,6 +113,7 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
         super.onDestroyView()
         model.selectionList.removeObservers(requireActivity())
         model.callResults.removeObservers(requireActivity())
+        _binding = null
     }
 
     private fun observeSelectionList() {
@@ -179,7 +180,7 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
 
     override fun onDestroy() {
         scope.cancel()
-        _binding = null
         super.onDestroy()
     }
+
 }

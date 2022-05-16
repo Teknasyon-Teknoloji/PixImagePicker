@@ -145,7 +145,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                 viewModel.onImageSelected(element, position) {
                     val size = viewModel.selectionListSize
                     if (options.count <= size) {
-                        requireActivity().toast(size)
+                        requireActivity().applicationContext.toast(size)
                         return@onImageSelected false
                     }
                     position.selection(it)
@@ -157,7 +157,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                 viewModel.onImageLongSelected(element, position) {
                     val size = viewModel.selectionListSize
                     if (options.count <= size) {
-                        requireActivity().toast(size)
+                        requireActivity().applicationContext.toast(size)
                         return@onImageLongSelected false
                     }
                     position.selection(it)
@@ -175,6 +175,8 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
             )
         }
     }
+
+
 
     private fun backPressController() {
         CoroutineScope(Dispatchers.Main).launch {
@@ -309,16 +311,12 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
         return false
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.imageList.removeObservers(requireActivity())
         viewModel.selectionList.removeObservers(requireActivity())
         viewModel.longSelection.removeObservers(requireActivity())
         viewModel.callResults.removeObservers(requireActivity())
+        _binding = null
     }
 }
