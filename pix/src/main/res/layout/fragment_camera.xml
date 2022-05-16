@@ -15,7 +15,7 @@
 
     <include
         android:id="@+id/grid_layout"
-        layout="@layout/grid_layout" />
+        layout="@layout/layout_camera_grid" />
 
     <include
         android:id="@+id/permissions_layout"

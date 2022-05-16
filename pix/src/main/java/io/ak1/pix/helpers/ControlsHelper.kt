@@ -16,11 +16,11 @@ import androidx.camera.core.ImageCapture
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.FragmentActivity
 import io.ak1.pix.R
-import io.ak1.pix.databinding.FragmentPixBinding
+import io.ak1.pix.databinding.FragmentCameraBinding
 import io.ak1.pix.models.Flash
 import io.ak1.pix.models.Mode
 import io.ak1.pix.models.Options
-import io.ak1.pix.models.PixViewModel
+import io.ak1.pix.ui.camera.CameraViewModel
 import io.ak1.pix.utility.TAG
 
 /**
@@ -28,7 +28,7 @@ import io.ak1.pix.utility.TAG
  * https://ak1.io
  */
 
-fun FragmentPixBinding.setDrawableIconForFlash(options: Options) {
+fun FragmentCameraBinding.setDrawableIconForFlash(options: Options) {
     gridLayout.controlsLayout.flashImage.setImageResource(
         when (options.flash) {
             Flash.Off -> R.drawable.ic_flash_off_black_24dp
@@ -70,8 +70,8 @@ fun ViewGroup.setOnClickForFLash(options: Options, callback: (Options) -> Unit) 
 }
 
 @SuppressLint("ClickableViewAccessibility,RestrictedApi")
-internal fun FragmentPixBinding.setupClickControls(
-    model: PixViewModel,
+internal fun FragmentCameraBinding.setupClickControls(
+    model: CameraViewModel,
     cameraXManager: CameraXManager?,
     options: Options,
     callback: (Int, Uri) -> Unit
@@ -243,7 +243,7 @@ internal fun FragmentPixBinding.setupClickControls(
     }
 }
 
-fun FragmentPixBinding.longSelectionStatus(
+fun FragmentCameraBinding.longSelectionStatus(
     enabled: Boolean
 ) {
     val colorPrimaryDark = root.context.color(R.color.primary_color_pix)
@@ -263,7 +263,7 @@ fun FragmentPixBinding.longSelectionStatus(
     }
 }
 
-fun FragmentPixBinding.setSelectionText(fragmentActivity: FragmentActivity, size: Int = 0) {
+fun FragmentCameraBinding.setSelectionText(fragmentActivity: FragmentActivity, size: Int = 0) {
     gridLayout.selectionCount.text = if (size == 0) {
         gridLayout.selectionOk.hide()
         fragmentActivity.resources.getString(R.string.pix_tap_to_select)

@@ -4,13 +4,12 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.DisplayMetrics
 import android.util.Log
-import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import io.ak1.pix.databinding.FragmentPixBinding
+import io.ak1.pix.databinding.FragmentCameraBinding
 import io.ak1.pix.models.Flash
 import io.ak1.pix.models.Mode
 import io.ak1.pix.models.Options
@@ -18,7 +17,6 @@ import io.ak1.pix.models.Ratio
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -46,7 +44,7 @@ class CameraXManager(
 
 
     /** Initialize CameraX, and prepare to bind the camera use cases  */
-    fun setUpCamera(binding: FragmentPixBinding) {
+    fun setUpCamera(binding: FragmentCameraBinding) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireActivity)
         cameraProviderFuture.addListener({
             // CameraProvider
@@ -57,7 +55,7 @@ class CameraXManager(
     }
 
     /** Declare and bind preview, capture and analysis use cases */
-    fun bindCameraUseCases(binding: FragmentPixBinding) {
+    fun bindCameraUseCases(binding: FragmentCameraBinding) {
         // Check if view is correctly attached to window, stop binding otherwise
         val display = previewView.display ?: return
 

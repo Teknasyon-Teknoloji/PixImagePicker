@@ -35,7 +35,7 @@ class FragmentSample : AppCompatActivity() {
     }
 
     private fun showCameraFragment() {
-        addPixToActivity(R.id.container, options) {
+        addPixCameraToActivity(R.id.container, options) {
             when (it.status) {
                 PixEventCallback.Status.SUCCESS -> {
                     showResultsFragment()

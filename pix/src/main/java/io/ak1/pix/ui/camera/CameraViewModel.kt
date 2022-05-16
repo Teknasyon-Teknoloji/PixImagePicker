@@ -1,10 +1,13 @@
-package io.ak1.pix.models
+package io.ak1.pix.ui.camera
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.ak1.pix.helpers.LocalResourceManager
 import io.ak1.pix.interfaces.PixLifecycle
+import io.ak1.pix.models.Img
+import io.ak1.pix.models.ModelList
+import io.ak1.pix.models.Options
 
 /**
  * Created By Akshay Sharma on 17,June,2021
@@ -12,7 +15,7 @@ import io.ak1.pix.interfaces.PixLifecycle
  */
 
 
-internal class PixViewModel : ViewModel(), PixLifecycle {
+internal class CameraViewModel : ViewModel(), PixLifecycle {
 
     val longSelection: MutableLiveData<Boolean> = MutableLiveData(false)
     val selectionList by lazy { MutableLiveData<MutableSet<Img>>(HashSet()) }

@@ -2,14 +2,14 @@ package io.ak1.pix.utility
 
 import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
-import io.ak1.pix.databinding.FragmentPixBinding
+import io.ak1.pix.databinding.FragmentCameraBinding
 
 /**
  * Created By Akshay Sharma on 17,June,2021
  * https://ak1.io
  */
 
-class CustomItemTouchListener(private val binding: FragmentPixBinding) :
+class CustomItemTouchListener(private val binding: FragmentCameraBinding) :
     RecyclerView.OnItemTouchListener {
     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
         val action = e.action

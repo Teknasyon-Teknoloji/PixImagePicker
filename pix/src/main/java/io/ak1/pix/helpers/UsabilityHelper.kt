@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
-import io.ak1.pix.PixFragment
+import io.ak1.pix.ui.camera.CameraFragment
 import io.ak1.pix.models.Options
 import io.ak1.pix.utility.ARG_PARAM_PIX
 import io.ak1.pix.utility.ARG_PARAM_PIX_KEY
@@ -73,25 +73,25 @@ open class PixEventCallback {
 object PixBus : PixEventCallback()
 
 
-fun AppCompatActivity.addPixToActivity(
+fun AppCompatActivity.addPixCameraToActivity(
     containerId: Int,
     options: Options?,
     resultCallback: ((PixEventCallback.Results) -> Unit)? = null
 ) {
     supportFragmentManager.beginTransaction()
-        .replace(containerId, PixFragment(resultCallback).apply {
+        .replace(containerId, CameraFragment(resultCallback).apply {
             arguments = Bundle().apply {
                 putParcelable(ARG_PARAM_PIX, options)
             }
         }).commit()
 }
 
-fun pixFragment(
+fun cameraFragment(
     options: Options,
     resultCallback: ((PixEventCallback.Results) -> Unit)? = null
-): PixFragment {
+): CameraFragment {
 
-    return PixFragment(resultCallback).apply {
+    return CameraFragment(resultCallback).apply {
         arguments = Bundle().apply {
             putParcelable(ARG_PARAM_PIX, options)
         }

@@ -6,7 +6,7 @@ import android.view.animation.ScaleAnimation
 import androidx.core.view.isVisible
 import io.ak1.pix.adapters.InstantImageAdapter
 import io.ak1.pix.adapters.MainImageAdapter
-import io.ak1.pix.databinding.GridLayoutBinding
+import io.ak1.pix.databinding.LayoutCameraGridBinding
 
 /**
  * Created By Akshay Sharma on 17,June,2021
@@ -22,7 +22,7 @@ fun Int.selection(b: Boolean) {
     mainImageAdapter.select(b, this)
 }
 
-fun GridLayoutBinding.sendButtonStateAnimation(show: Boolean, withAnim: Boolean = true) {
+fun LayoutCameraGridBinding.sendButtonStateAnimation(show: Boolean, withAnim: Boolean = true) {
     if (sendButton.visibility == View.GONE && !show) return
     if (show) {
         if (sendButton.isVisible) return

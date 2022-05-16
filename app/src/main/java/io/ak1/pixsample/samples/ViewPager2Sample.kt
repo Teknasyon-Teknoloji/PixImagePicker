@@ -27,10 +27,10 @@ import io.ak1.pixsample.options
 class ViewPager2Sample : AppCompatActivity() {
     private val iconWidth = 150
     private lateinit var binding: ActivityViewPager2SampleBinding
-    private val pixFragment = pixFragment(options)
+    private val cameraFragment = cameraFragment(options)
     private val viewPagerResultsFragment = ViewPagerResultsFragment()
     var fragmentList = ArrayList<Fragment>().apply {
-        add(pixFragment)
+        add(cameraFragment)
         add(viewPagerResultsFragment)
         add(SampleFragment())
         add(SampleFragment())

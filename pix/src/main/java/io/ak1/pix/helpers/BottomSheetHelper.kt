@@ -6,7 +6,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import io.ak1.pix.databinding.FragmentPixBinding
+import io.ak1.pix.databinding.FragmentCameraBinding
 
 /**
  * Created By Akshay Sharma on 17,June,2021
@@ -14,7 +14,7 @@ import io.ak1.pix.databinding.FragmentPixBinding
  */
 
 internal fun FragmentActivity.setup(
-    binding: FragmentPixBinding,
+    binding: FragmentCameraBinding,
     bottomSheetBehavior: BottomSheetBehavior<View>?,
     callback: (Boolean) -> Unit
 ) {
@@ -50,7 +50,7 @@ internal fun FragmentActivity.setup(
 }
 
 private fun manipulateVisibility(
-    activity: FragmentActivity, binding: FragmentPixBinding,
+    activity: FragmentActivity, binding: FragmentCameraBinding,
     slideOffset: Float
 ) {
     binding.gridLayout.apply {
