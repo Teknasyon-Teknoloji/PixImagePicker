@@ -54,8 +54,7 @@ internal class LocalResourceManager(
 
         try {
             if (cursor != null) {
-                val mediaTypeColumnId =
-                    cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE)
+                val mediaTypeColumnId = cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE)
                 val contentUrl = cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)
                 val imageDate = cursor.getColumnIndex(MediaStore.Files.FileColumns.DATE_MODIFIED)
                 if (start > cursor.count) {
@@ -72,10 +71,7 @@ internal class LocalResourceManager(
                     cursor.moveToFirst()
                 } else {
                     cursor.moveToPosition(start)
-                    header =
-                        context.resources.getDateDifference(
-                            Calendar.getInstance()
-                                .apply { timeInMillis = cursor.getLong(imageDate) * 1000 })
+                    header = context.resources.getDateDifference(Calendar.getInstance().apply { timeInMillis = cursor.getLong(imageDate) * 1000 })
                 }
                 synchronized(context) {
                     var pos = start

@@ -9,6 +9,7 @@ import io.ak1.pix.ui.camera.Event
 import io.ak1.pix.models.Img
 import io.ak1.pix.models.ModelList
 import io.ak1.pix.models.Options
+import kotlinx.coroutines.delay
 
 internal class ImagePickerViewModel : ViewModel(), PixLifecycle {
     private val allImagesList by lazy { MutableLiveData(ModelList()) }
@@ -31,7 +32,7 @@ internal class ImagePickerViewModel : ViewModel(), PixLifecycle {
 
     private lateinit var options: Options
 
-    fun retrieveImages(localResourceManager: LocalResourceManager) {
+    suspend fun retrieveImages(localResourceManager: LocalResourceManager) {
         val sizeInitial = 100
         _selectionList.value?.clear()
         allImagesList.postValue(
@@ -40,6 +41,7 @@ internal class ImagePickerViewModel : ViewModel(), PixLifecycle {
                 mode = options.mode
             )
         )
+        delay(100)
         val modelList = localResourceManager.retrieveMedia(
             start = sizeInitial + 1,
             mode = options.mode

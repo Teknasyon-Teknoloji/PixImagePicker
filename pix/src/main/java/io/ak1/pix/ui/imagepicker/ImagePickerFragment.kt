@@ -33,7 +33,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
     private val binding get() = _binding!!
     private var scope = CoroutineScope(Dispatchers.IO)
     private lateinit var options: Options
-    internal val mScrollbarHider = Runnable { binding.hideScrollbar() }
+    internal val mScrollbarHider = Runnable { _binding?.hideScrollbar() }
 
     private var permReqLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
