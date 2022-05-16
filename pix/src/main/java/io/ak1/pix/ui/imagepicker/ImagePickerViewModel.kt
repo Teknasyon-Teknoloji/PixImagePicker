@@ -11,25 +11,29 @@ import io.ak1.pix.models.Options
 import io.ak1.pix.ui.camera.Event
 
 internal class ImagePickerViewModel : ViewModel(), PixLifecycle {
-
-    val longSelection: MutableLiveData<Boolean> = MutableLiveData(false)
-    val selectionList by lazy { MutableLiveData<MutableSet<Img>>(HashSet()) }
     private val allImagesList by lazy { MutableLiveData(ModelList()) }
-    val callResults by lazy { MutableLiveData<Event<MutableSet<Img>>>() }
+    private val _longSelection: MutableLiveData<Boolean> = MutableLiveData(false)
+    val longSelection: LiveData<Boolean> = _longSelection
+    private val _selectionList by lazy { MutableLiveData<MutableSet<Img>>(HashSet()) }
+    val selectionList: LiveData<MutableSet<Img>> = _selectionList
+    private val _callResults by lazy { MutableLiveData<Event<MutableSet<Img>>>() }
+    val callResults: LiveData<Event<MutableSet<Img>>> = _callResults
+
     val longSelectionValue: Boolean
         get() {
-            return longSelection.value ?: false
+            return _longSelection.value ?: false
         }
     val selectionListSize: Int
         get() {
-            return selectionList.value?.size ?: 0
+            return _selectionList.value?.size ?: 0
         }
     val imageList: LiveData<ModelList> = allImagesList
 
     private lateinit var options: Options
+
     fun retrieveImages(localResourceManager: LocalResourceManager) {
         val sizeInitial = 100
-        selectionList.value?.clear()
+        _selectionList.value?.clear()
         allImagesList.postValue(
             localResourceManager.retrieveMedia(
                 limit = sizeInitial,
@@ -45,47 +49,55 @@ internal class ImagePickerViewModel : ViewModel(), PixLifecycle {
         }
     }
 
-
     override fun onImageSelected(element: Img?, position: Int, callback: (Boolean) -> Boolean) {
         if (longSelectionValue) {
-            selectionList.value?.apply {
-                if (contains(element)) {
-                    remove(element)
-                    callback(false)
-                } else if (callback(true)) {
-                    element!!.position = (position)
-                    add(element)
-                }
+            _selectionList.value?.apply {
+                updateSelectionList(element, position, callback)
             }
-            selectionList.postValue(selectionList.value)
+            changeSelectionList(_selectionList.value)
         } else {
-            element!!.position = position
-            selectionList.value?.add(element)
-            returnObjects()
+            element?.let { img ->
+                img.position = position
+                _selectionList.value?.add(img)
+                returnObjects()
+            }
         }
 
     }
 
     override fun onImageLongSelected(element: Img?, position: Int, callback: (Boolean) -> Boolean) {
         if (options.count > 1) {
-            // Utility.Companion.vibe(this@Pix, 50)
-            longSelection.postValue(true)
-            selectionList.value?.apply {
-                if (contains(element)) {
-                    remove(element)
-                    callback(false)
-                } else if (callback(true)) {
-                    element!!.position = (position)
-                    add(element)
-                }
-            }
-            selectionList.postValue(selectionList.value)
+            changeLongSelectionStatus(true)
+            updateSelectionList(element, position, callback)
+            changeSelectionList(_selectionList.value)
         }
     }
 
-    fun returnObjects() = callResults.postValue(Event(selectionList.value ?: HashSet()))
+    private fun updateSelectionList(element: Img?, position: Int, callback: (Boolean) -> Boolean){
+        _selectionList.value?.apply {
+            if (contains(element)) {
+                remove(element)
+                callback(false)
+            } else if (callback(true)) {
+                element?.let {  img ->
+                    img.position = position
+                    add(img)
+                }
+            }
+        }
+    }
+
+    fun returnObjects() = _callResults.postValue(Event(_selectionList.value ?: HashSet()))
 
     fun setOptions(options: Options) {
         this.options = options
+    }
+
+    fun changeLongSelectionStatus(status: Boolean){
+        _longSelection.postValue(status)
+    }
+
+    fun changeSelectionList(newList: MutableSet<Img>?) {
+        _selectionList.postValue(newList?: HashSet())
     }
 }

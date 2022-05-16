@@ -185,7 +185,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                         for (img in list) {
                             mainImageAdapter.select(false, img.position)
                         }
-                        viewModel.selectionList.postValue(HashSet())
+                        viewModel.changeSelectionList(HashSet())
                     }
                     else -> {
                         viewModel.returnObjects()
@@ -200,14 +200,13 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
         viewModel.imageList.observe(requireActivity()) {
             mainImageAdapter.addImageList(it.list)
             viewModel.selectionList.value?.addAll(it.selection)
-            viewModel.selectionList.postValue(viewModel.selectionList.value)
+            viewModel.changeSelectionList(viewModel.selectionList.value)
         }
         viewModel.selectionList.observe(requireActivity()) {
-            //Log.e(TAG, "selectionList size is now ${it.size}")
             if (it.size == 0) {
-                viewModel.longSelection.postValue(false)
-            } else if (!viewModel.longSelectionValue) {
-                viewModel.longSelection.postValue(true)
+                viewModel.changeLongSelectionStatus(false)
+            } else if (viewModel.longSelectionValue.not()) {
+                viewModel.changeLongSelectionStatus(true)
             }
             binding.setSelectionText(requireActivity(), it.size)
         }
@@ -216,7 +215,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
         }
         viewModel.callResults.observe(requireActivity()) { event ->
             event?.getContentIfNotHandledOrReturnNull()?.let { set ->
-                viewModel.selectionList.postValue(HashSet())
+                viewModel.changeSelectionList(HashSet())
                 options.preSelectedUrls.clear()
                 val results = set.map { it.contentUrl }
                 resultCallback?.invoke(PixEventCallback.Results(results))
@@ -231,11 +230,11 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
     }
 
     private fun setupControls() {
-        binding.setupClickControls() { int, _ ->
-            when (int) {
+        binding.setupClickControls { status, _ ->
+            when (status) {
                 0 -> viewModel.returnObjects()
                 1 -> onPressedBackButton()
-                2 -> viewModel.longSelection.postValue(true)
+                2 -> viewModel.changeLongSelectionStatus(true)
             }
         }
     }
@@ -281,7 +280,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                     gridLayout.fastscrollHandle.isSelected = true
                     handler.removeCallbacks(mScrollbarHider)
                     cancelAnimation(mScrollbarAnimator, mBubbleAnimator)
-                    if (!gridLayout.fastscrollScrollbar.isVisible && (gridLayout.recyclerView.computeVerticalScrollRange() - mViewHeight > 0)) {
+                    if (gridLayout.fastscrollScrollbar.isVisible.not()&& (gridLayout.recyclerView.computeVerticalScrollRange() - mViewHeight > 0)) {
                         mScrollbarAnimator = showScrollbar(gridLayout.fastscrollScrollbar, requireActivity())
                     }
                     showBubble()
