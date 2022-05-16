@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import io.ak1.pix.ui.camera.CameraFragment
 import io.ak1.pix.models.Options
+import io.ak1.pix.ui.imagepicker.ImagePickerFragment
 import io.ak1.pix.utility.ARG_PARAM_PIX
 import io.ak1.pix.utility.ARG_PARAM_PIX_KEY
 import kotlinx.coroutines.CoroutineScope
@@ -71,6 +72,16 @@ open class PixEventCallback {
 }
 
 object PixBus : PixEventCallback()
+
+
+fun AppCompatActivity.addPixImagePickerToActivity(
+    containerId: Int,
+    options: Options?,
+    resultCallback: ((PixEventCallback.Results) -> Unit)? = null
+) {
+    supportFragmentManager.beginTransaction()
+        .replace(containerId, ImagePickerFragment()).commit()
+}
 
 
 fun AppCompatActivity.addPixCameraToActivity(

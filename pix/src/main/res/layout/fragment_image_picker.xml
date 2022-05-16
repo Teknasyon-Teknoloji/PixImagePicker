@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/grid_layout"
+        layout="@layout/layout_image_picker_grid" />
+
+    <include
+        android:id="@+id/permissions_layout"
+        layout="@layout/permissions_layout" />
+
+</FrameLayout>

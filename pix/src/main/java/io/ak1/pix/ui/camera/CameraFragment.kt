@@ -47,9 +47,7 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
 
     private var permReqLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            if (permissions.all {
-                    it.value
-                }) {
+            if (permissions.all { it.value }) {
                 binding.permissionsLayout.permissionsLayout.hide()
                 binding.gridLayout.gridLayout.show()
                 initialise(requireActivity())

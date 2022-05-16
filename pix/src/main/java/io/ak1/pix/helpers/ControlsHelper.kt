@@ -17,6 +17,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.FragmentActivity
 import io.ak1.pix.R
 import io.ak1.pix.databinding.FragmentCameraBinding
+import io.ak1.pix.databinding.FragmentImagePickerBinding
 import io.ak1.pix.models.Flash
 import io.ak1.pix.models.Mode
 import io.ak1.pix.models.Options
@@ -264,6 +265,37 @@ fun FragmentCameraBinding.longSelectionStatus(
 }
 
 fun FragmentCameraBinding.setSelectionText(fragmentActivity: FragmentActivity, size: Int = 0) {
+    gridLayout.selectionCount.text = if (size == 0) {
+        gridLayout.selectionOk.hide()
+        fragmentActivity.resources.getString(R.string.pix_tap_to_select)
+    } else {
+        gridLayout.selectionOk.show()
+        "$size ${fragmentActivity.resources.getString(R.string.pix_selected)}"
+    }
+    gridLayout.imgCount.text = size.toString()
+}
+
+fun FragmentImagePickerBinding.longSelectionStatus(
+    enabled: Boolean
+) {
+    val colorPrimaryDark = root.context.color(R.color.primary_color_pix)
+    val colorSurface = root.context.color(R.color.surface_color_pix)
+
+    if (enabled) {
+        gridLayout.selectionCheck.hide()
+        gridLayout.selectionCount.setTextColor(colorSurface)
+        gridLayout.topbar.setBackgroundColor(colorPrimaryDark)
+        DrawableCompat.setTint(gridLayout.selectionBack.drawable, colorSurface)
+        DrawableCompat.setTint(gridLayout.selectionCheck.drawable, colorSurface)
+    } else {
+        gridLayout.selectionCheck.show()
+        DrawableCompat.setTint(gridLayout.selectionBack.drawable, colorPrimaryDark)
+        DrawableCompat.setTint(gridLayout.selectionCheck.drawable, colorPrimaryDark)
+        gridLayout.topbar.setBackgroundColor(colorSurface)
+    }
+}
+
+fun FragmentImagePickerBinding.setSelectionText(fragmentActivity: FragmentActivity, size: Int = 0) {
     gridLayout.selectionCount.text = if (size == 0) {
         gridLayout.selectionOk.hide()
         fragmentActivity.resources.getString(R.string.pix_tap_to_select)

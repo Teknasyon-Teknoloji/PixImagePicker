@@ -22,6 +22,10 @@ fun Int.selection(b: Boolean) {
     mainImageAdapter.select(b, this)
 }
 
+fun Int.selectionForImagePicker(b: Boolean) {
+    mainImageAdapter.select(b, this)
+}
+
 fun LayoutCameraGridBinding.sendButtonStateAnimation(show: Boolean, withAnim: Boolean = true) {
     if (sendButton.visibility == View.GONE && !show) return
     if (show) {
