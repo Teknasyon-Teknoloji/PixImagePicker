@@ -113,6 +113,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
         retrieveMedia()
         setFastScrollbar()
         setupControls()
+        backPressController()
     }
 
     private fun setFastScrollbar() {
@@ -175,10 +176,28 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
         }
     }
 
+    private fun backPressController() {
+        CoroutineScope(Dispatchers.Main).launch {
+            PixBus.on(this) {
+                val list = viewModel.selectionList.value ?: HashSet()
+                when {
+                    list.size > 0 -> {
+                        for (img in list) {
+                            mainImageAdapter.select(false, img.position)
+                        }
+                        viewModel.selectionList.postValue(HashSet())
+                    }
+                    else -> {
+                        viewModel.returnObjects()
+                    }
+                }
+            }
+        }
+    }
+
     private fun observeSelectionList() {
         viewModel.setOptions(options)
         viewModel.imageList.observe(requireActivity()) {
-            //Log.e(TAG, "imageList size is now ${it.list.size}")
             mainImageAdapter.addImageList(it.list)
             viewModel.selectionList.value?.addAll(it.selection)
             viewModel.selectionList.postValue(viewModel.selectionList.value)
@@ -215,14 +234,18 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
         binding.setupClickControls() { int, _ ->
             when (int) {
                 0 -> viewModel.returnObjects()
-                1 -> viewModel.returnObjects()
+                1 -> onPressedBackButton()
                 2 -> viewModel.longSelection.postValue(true)
             }
         }
     }
 
+    private fun onPressedBackButton(){
+        viewModel.selectionList.value?.clear()
+        viewModel.returnObjects()
+    }
+
     private fun retrieveMedia() {
-        // options.preSelectedUrls.addAll(selectionList)
         if (options.preSelectedUrls.size > options.count) {
             val large = options.preSelectedUrls.size - 1
             val small = options.count
@@ -244,6 +267,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View?, event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
