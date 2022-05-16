@@ -22,11 +22,6 @@ fun FragmentCameraBinding.videoRecordingStartAnim() {
         duration = 300
         interpolator = adInterpolator
     }.start()
-    gridLayout.controlsLayout.messageBottom.animate().apply {
-        alpha(0f)
-        duration = 300
-        interpolator = adInterpolator
-    }.start()
     gridLayout.controlsLayout.lensFacing.animate().apply {
         alpha(0f)
         duration = 300
@@ -44,12 +39,6 @@ fun FragmentCameraBinding.videoRecordingEndAnim() {
     }.start()
     gridLayout.controlsLayout.flashButton.animate().apply {
         alpha(1f)
-        duration = 300
-        interpolator = adInterpolator
-    }.start()
-    gridLayout.controlsLayout.messageBottom.animate().apply {
-        scaleX(1f)
-        scaleY(1f)
         duration = 300
         interpolator = adInterpolator
     }.start()

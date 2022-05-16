@@ -77,13 +77,6 @@ internal fun FragmentCameraBinding.setupClickControls(
     options: Options,
     callback: (Int, Uri) -> Unit
 ) {
-    gridLayout.controlsLayout.messageBottom.setText(
-        when (options.mode) {
-            Mode.Picture -> R.string.pix_bottom_message_without_video
-            Mode.Video -> R.string.pix_bottom_message_with_only_video
-            else -> R.string.pix_bottom_message_with_video
-        }
-    )
     gridLayout.controlsLayout.primaryClickButton.apply {
         var videoCounterProgress: Int
 
