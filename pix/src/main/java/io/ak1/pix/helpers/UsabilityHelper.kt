@@ -125,5 +125,3 @@ fun FragmentManager.resetMedia(preSelectedUrls: ArrayList<Uri> = ArrayList()) {
     )
 
 }
-// TODO: 18/06/21 more usability methods to be added
-// TODO: 18/06/21 add documentation for usability methods

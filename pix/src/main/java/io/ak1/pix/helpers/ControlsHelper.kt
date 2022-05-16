@@ -18,10 +18,10 @@ import androidx.fragment.app.FragmentActivity
 import io.ak1.pix.R
 import io.ak1.pix.databinding.FragmentCameraBinding
 import io.ak1.pix.databinding.FragmentImagePickerBinding
+import io.ak1.pix.ui.camera.CameraViewModel
 import io.ak1.pix.models.Flash
 import io.ak1.pix.models.Mode
 import io.ak1.pix.models.Options
-import io.ak1.pix.ui.camera.CameraViewModel
 import io.ak1.pix.utility.TAG
 
 /**
@@ -91,10 +91,6 @@ internal fun FragmentCameraBinding.setupClickControls(
         lateinit var videoCounterRunnable: Runnable
 
         setOnClickListener {
-            if (options.count <= model.selectionListSize) {
-                gridLayout.sendButton.context.toast(model.selectionListSize)
-                return@setOnClickListener
-            }
             cameraXManager?.takePhoto { uri, exc ->
                 if (exc == null) {
                     val newUri = Uri.parse(uri.toString())
@@ -112,11 +108,6 @@ internal fun FragmentCameraBinding.setupClickControls(
         var isRecording = false
         setOnLongClickListener {
             if (options.mode == Mode.Picture) {
-                return@setOnLongClickListener false
-            }
-
-            if (options.count <= model.selectionListSize) {
-                gridLayout.sendButton.context.toast(model.selectionListSize)
                 return@setOnLongClickListener false
             }
             callback(4, Uri.EMPTY)
@@ -191,13 +182,6 @@ internal fun FragmentCameraBinding.setupClickControls(
             }
             false
         }
-        gridLayout.selectionOk.setOnClickListener { callback(0, Uri.EMPTY) }
-        gridLayout.sendButton.setOnClickListener { callback(0, Uri.EMPTY) }
-        gridLayout.selectionBack.setOnClickListener { callback(1, Uri.EMPTY) }
-        gridLayout.selectionCheck.setOnClickListener {
-            gridLayout.selectionCheck.hide()
-            callback(2, Uri.EMPTY)
-        }
     }
     gridLayout.controlsLayout.flashButton.setOnClickForFLash(options) {
         setDrawableIconForFlash(it)
@@ -232,35 +216,6 @@ internal fun FragmentCameraBinding.setupClickControls(
         options.isFrontFacing = !options.isFrontFacing
         cameraXManager?.bindCameraUseCases(this)
     }
-}
-
-fun FragmentCameraBinding.longSelectionStatus(enabled: Boolean) {
-    val colorPrimaryDark = root.context.color(R.color.primary_color_pix)
-    val colorSurface = root.context.color(R.color.surface_color_pix)
-
-    if (enabled) {
-        gridLayout.selectionCheck.hide()
-        gridLayout.selectionCount.setTextColor(colorSurface)
-        gridLayout.topbar.setBackgroundColor(colorPrimaryDark)
-        DrawableCompat.setTint(gridLayout.selectionBack.drawable, colorSurface)
-        DrawableCompat.setTint(gridLayout.selectionCheck.drawable, colorSurface)
-    } else {
-        gridLayout.selectionCheck.show()
-        DrawableCompat.setTint(gridLayout.selectionBack.drawable, colorPrimaryDark)
-        DrawableCompat.setTint(gridLayout.selectionCheck.drawable, colorPrimaryDark)
-        gridLayout.topbar.setBackgroundColor(colorSurface)
-    }
-}
-
-fun FragmentCameraBinding.setSelectionText(fragmentActivity: FragmentActivity, size: Int = 0) {
-    gridLayout.selectionCount.text = if (size == 0) {
-        gridLayout.selectionOk.hide()
-        fragmentActivity.resources.getString(R.string.pix_tap_to_select)
-    } else {
-        gridLayout.selectionOk.show()
-        "$size ${fragmentActivity.resources.getString(R.string.pix_selected)}"
-    }
-    gridLayout.imgCount.text = size.toString()
 }
 
 internal fun FragmentImagePickerBinding.setupClickControls(callback: (Int, Uri) -> Unit) {
