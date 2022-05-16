@@ -43,6 +43,11 @@ private val REQUIRED_PERMISSIONS_VIDEO = if (Build.VERSION.SDK_INT > Build.VERSI
     )
 }
 
+private val REQUIRED_PERMISSIONS_IMAGE_PICKER =
+    arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
 // TODO: 20/06/21 call onBackPressed() method if any permission is denied
 fun ActivityResultLauncher<Array<String>>.permissionsFilter(
     fragmentActivity: FragmentActivity,
@@ -63,3 +68,15 @@ private fun Activity.allPermissionsGranted(mode: Mode) =
         ) == PackageManager.PERMISSION_GRANTED
         check
     }
+
+fun ActivityResultLauncher<Array<String>>.permissionsFilterForImagePicker(
+    fragmentActivity: FragmentActivity,
+    options: Options,
+    callback: () -> Unit
+) {
+    if (fragmentActivity.allPermissionsGranted(options.mode)) {
+        callback()
+    } else {
+        this.launch(REQUIRED_PERMISSIONS_IMAGE_PICKER)
+    }
+}

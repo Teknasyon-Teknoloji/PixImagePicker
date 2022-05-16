@@ -80,7 +80,7 @@ class ImagePickerFragment : Fragment(), View.OnTouchListener {
                     addAll(it.preSelectedUrls)
                 }
             }
-            permReqLauncher.permissionsFilter(this, options) {
+            permReqLauncher.permissionsFilterForImagePicker(this, options) {
                 retrieveMedia()
             }
 
@@ -89,14 +89,14 @@ class ImagePickerFragment : Fragment(), View.OnTouchListener {
 
     private fun permissions() {
         binding.permissionsLayout.permissionButton.setOnClickListener {
-            permReqLauncher.permissionsFilter(requireActivity(), options) {
+            permReqLauncher.permissionsFilterForImagePicker(requireActivity(), options) {
                 initialise(requireActivity())
             }
         }
     }
 
     private fun reSetup(context: FragmentActivity) {
-        permReqLauncher.permissionsFilter(context, options) {
+        permReqLauncher.permissionsFilterForImagePicker(context, options) {
             initialise(context)
         }
     }
