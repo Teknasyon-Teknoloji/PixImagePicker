@@ -1,6 +1,7 @@
 package io.ak1.pix.ui.imagepicker
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -13,6 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import io.ak1.pix.adapters.MainImageAdapter
 import io.ak1.pix.databinding.FragmentImagePickerBinding
 import io.ak1.pix.helpers.*
@@ -61,7 +64,6 @@ class ImagePickerFragment : Fragment(), View.OnTouchListener {
         binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().setup()
@@ -105,12 +107,25 @@ class ImagePickerFragment : Fragment(), View.OnTouchListener {
     private fun initialise(context: FragmentActivity) {
         binding.permissionsLayout.permissionsLayout.hide()
         binding.gridLayout.gridLayout.show()
-        showScrollbar(binding.gridLayout.fastscrollScrollbar, requireContext())
-        binding.setViewPositions(getScrollProportion(binding.gridLayout.recyclerView))
         setupAdapters(context)
         setupFastScroller(context)
         observeSelectionList()
         retrieveMedia()
+        setFastScrollbar()
+
+    }
+
+    private fun setFastScrollbar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.gridLayout.recyclerView.addOnScrollListener(object : OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    showScrollbar(binding.gridLayout.fastscrollScrollbar, requireContext())
+                    mViewHeight = binding.gridLayout.fastscrollScrollbar.measuredHeight.toFloat()
+                    handler.post { binding.setViewPositions(getScrollProportion(binding.gridLayout.recyclerView)) }
+                }
+            })
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

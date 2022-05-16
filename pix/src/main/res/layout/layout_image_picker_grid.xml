@@ -51,7 +51,8 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
                     android:layout_marginTop="@dimen/small_thumb"
-                    android:minWidth="20dp">
+                    android:minWidth="20dp"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/fastscroll_track"
