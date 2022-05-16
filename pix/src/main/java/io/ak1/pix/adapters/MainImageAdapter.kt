@@ -107,14 +107,13 @@ internal class MainImageAdapter(context: Context, internal val spanCount: Int) :
         if (holder is Holder) holder.bind(image)
         else if (holder is HeaderHolder) {
             holder.bind(image.headerDate)
-            //Log.e("header date", "${image.headerDate} ${image.mediaType}")
         }
     }
 
     override fun getItemCount() = itemList.size
 
-    override fun getHeaderPositionForItem(position: Int): Int {
-        var tempPosition = position
+    override fun getHeaderPositionForItem(itemPosition: Int): Int {
+        var tempPosition = itemPosition
         var headerPosition = 0
         do {
             if (isHeader(tempPosition)) {

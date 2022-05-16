@@ -19,7 +19,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import io.ak1.pix.R
-import io.ak1.pix.adapters.InstantImageAdapter
 import io.ak1.pix.adapters.MainImageAdapter
 import io.ak1.pix.databinding.FragmentCameraBinding
 import io.ak1.pix.helpers.*
@@ -28,7 +27,6 @@ import io.ak1.pix.models.Img
 import io.ak1.pix.models.Options
 import io.ak1.pix.utility.ARG_PARAM_PIX
 import io.ak1.pix.utility.ARG_PARAM_PIX_KEY
-import io.ak1.pix.utility.CustomItemTouchListener
 import kotlinx.coroutines.*
 import java.lang.Runnable
 import kotlin.coroutines.cancellation.CancellationException
@@ -104,7 +102,6 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
         binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().setup()
@@ -173,17 +170,11 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
     private fun observeSelectionList() {
         model.setOptions(options)
         model.imageList.observe(requireActivity()) {
-            //Log.e(TAG, "imageList size is now ${it.list.size}")
-            instantImageAdapter.addImageList(it.list)
             mainImageAdapter.addImageList(it.list)
             model.selectionList.value?.addAll(it.selection)
             model.selectionList.postValue(model.selectionList.value)
-            binding.gridLayout.arrowUp.apply {
-                if (mainImageAdapter.listSize != 0) show() else hide()
-            }
         }
         model.selectionList.observe(requireActivity()) {
-            //Log.e(TAG, "selectionList size is now ${it.size}")
             if (it.size == 0) {
                 model.longSelection.postValue(false)
             } else if (!model.longSelectionValue) {
@@ -192,7 +183,6 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
             binding.setSelectionText(requireActivity(), it.size)
         }
         model.longSelection.observe(requireActivity()) {
-            //Log.e(TAG, "longSelection is now changed to  $it")
             binding.longSelectionStatus(it)
             if (mBottomSheetBehavior?.state ?: BottomSheetBehavior.STATE_COLLAPSED == BottomSheetBehavior.STATE_COLLAPSED) {
                 binding.gridLayout.sendButtonStateAnimation(it)
@@ -232,8 +222,6 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
                 when {
                     list.size > 0 -> {
                         for (img in list) {
-                            //  options.preSelectedUrls = ArrayList()
-                            instantImageAdapter.select(false, img.position)
                             mainImageAdapter.select(false, img.position)
                         }
                         model.selectionList.postValue(HashSet())
@@ -298,7 +286,6 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
             val localResourceManager = LocalResourceManager(requireContext()).apply {
                 this.preSelectedUrls = options.preSelectedUrls
             }
-            instantImageAdapter.clearList()
             mainImageAdapter.clearList()
             model.retrieveImages(localResourceManager)
         }
@@ -330,17 +317,12 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
                     return@onImageLongSelected true
                 }
         }
-        instantImageAdapter = InstantImageAdapter(context).apply {
-            addOnSelectionListener(onSelectionListener)
-        }
         mainImageAdapter = MainImageAdapter(context, options.spanCount).apply {
             addOnSelectionListener(onSelectionListener)
             setHasStableIds(true)
         }
 
         binding.gridLayout.apply {
-            instantRecyclerView.adapter = instantImageAdapter
-            instantRecyclerView.addOnItemTouchListener(CustomItemTouchListener(binding))
             recyclerView.setupMainRecyclerView(
                 context, mainImageAdapter, scrollListener(this@CameraFragment, binding)
             )
@@ -358,7 +340,6 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
                 handler.post { binding.setViewPositions(getScrollProportion(binding.gridLayout.recyclerView)) }
                 binding.gridLayout.sendButtonStateAnimation(show = false, withAnim = false)
             } else {
-                instantImageAdapter.notifyDataSetChanged()
                 binding.gridLayout.fastscrollScrollbar.hide()
                 binding.gridLayout.sendButtonStateAnimation(model.longSelectionValue)
             }

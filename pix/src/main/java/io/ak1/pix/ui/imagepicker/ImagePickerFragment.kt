@@ -148,7 +148,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                         requireActivity().toast(size)
                         return@onImageSelected false
                     }
-                    position.selectionForImagePicker(it)
+                    position.selection(it)
                     return@onImageSelected true
                 }
             }
@@ -160,7 +160,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                         requireActivity().toast(size)
                         return@onImageLongSelected false
                     }
-                    position.selectionForImagePicker(it)
+                    position.selection(it)
                     return@onImageLongSelected true
                 }
         }

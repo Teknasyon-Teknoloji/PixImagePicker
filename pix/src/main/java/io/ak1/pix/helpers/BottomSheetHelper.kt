@@ -54,19 +54,12 @@ private fun manipulateVisibility(
     slideOffset: Float
 ) {
     binding.gridLayout.apply {
-        instantRecyclerView.alpha = 1 - slideOffset
-        arrowUp.alpha = 1 - slideOffset
         controlsLayout.controlsLayout.alpha = 1 - slideOffset
         topbar.alpha = slideOffset
         recyclerView.alpha = slideOffset
         if (1 - slideOffset == 0f) {
-            instantRecyclerView.hide()
-            arrowUp.hide()
             controlsLayout.primaryClickButton.hide()
-        } else if (instantRecyclerView.isGone && 1 - slideOffset > 0) {
-            instantRecyclerView.show()
-            arrowUp.show()
-            controlsLayout.primaryClickButton.show()
+
         }
         if (slideOffset > 0 && recyclerView.isInvisible) {
             recyclerView.show()

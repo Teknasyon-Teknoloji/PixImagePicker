@@ -134,10 +134,6 @@ internal fun FragmentCameraBinding.setupClickControls(
 
 
                     if (videoCounterProgress > options.videoOptions.videoDurationLimitInSeconds) {
-                        gridLayout.initialRecyclerviewContainer.apply {
-                            alpha = 1f
-                            translationY = 0f
-                        }
                         callback(5, Uri.EMPTY)
                         isRecording = false
                         videoCounterLayout.videoCounterLayout.hide()
@@ -154,8 +150,6 @@ internal fun FragmentCameraBinding.setupClickControls(
             val maxVideoDuration = options.videoOptions.videoDurationLimitInSeconds
             videoCounterLayout.videoPbr.max = maxVideoDuration / 1000
             videoCounterLayout.videoPbr.invalidate()
-            gridLayout.initialRecyclerviewContainer.animate().translationY(500f).alpha(0f)
-                .setDuration(200).start()
             cameraXManager?.takeVideo { uri, exc ->
                 if (exc == null) {
                     callback(3, uri)
@@ -188,10 +182,6 @@ internal fun FragmentCameraBinding.setupClickControls(
                 root.requestDisallowInterceptTouchEvent(true)
             }
             if ((event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) && isRecording) {
-                gridLayout.initialRecyclerviewContainer.apply {
-                    alpha = 1f
-                    translationY = 0f
-                }
                 callback(5, Uri.EMPTY)
                 isRecording = false
                 videoCounterLayout.videoCounterLayout.hide()

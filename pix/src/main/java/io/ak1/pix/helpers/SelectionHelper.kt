@@ -4,7 +4,6 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import androidx.core.view.isVisible
-import io.ak1.pix.adapters.InstantImageAdapter
 import io.ak1.pix.adapters.MainImageAdapter
 import io.ak1.pix.databinding.LayoutCameraGridBinding
 
@@ -14,15 +13,9 @@ import io.ak1.pix.databinding.LayoutCameraGridBinding
  */
 
 // TODO: 18/06/21 if possible include in fragment class
-internal lateinit var instantImageAdapter: InstantImageAdapter
 internal lateinit var mainImageAdapter: MainImageAdapter
 
 fun Int.selection(b: Boolean) {
-    instantImageAdapter.select(b, this)
-    mainImageAdapter.select(b, this)
-}
-
-fun Int.selectionForImagePicker(b: Boolean) {
     mainImageAdapter.select(b, this)
 }
 

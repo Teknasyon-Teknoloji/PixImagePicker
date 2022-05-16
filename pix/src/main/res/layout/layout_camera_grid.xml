@@ -137,29 +137,6 @@
                             android:src="@drawable/ic_check_box" />
                     </FrameLayout>
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/initial_recyclerview_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/arrow_up"
-                            android:visibility="gone"
-                            android:layout_width="20dp"
-                            android:layout_height="16dp"
-                            android:layout_gravity="bottom|center_horizontal"
-                            android:background="@drawable/ic_expand_less_black_24dp" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/instantRecyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="82dp"
-                            android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
                 </FrameLayout>
             </FrameLayout>
 
