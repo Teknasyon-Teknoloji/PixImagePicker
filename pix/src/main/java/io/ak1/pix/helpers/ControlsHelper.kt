@@ -244,9 +244,7 @@ internal fun FragmentCameraBinding.setupClickControls(
     }
 }
 
-fun FragmentCameraBinding.longSelectionStatus(
-    enabled: Boolean
-) {
+fun FragmentCameraBinding.longSelectionStatus(enabled: Boolean) {
     val colorPrimaryDark = root.context.color(R.color.primary_color_pix)
     val colorSurface = root.context.color(R.color.surface_color_pix)
 
@@ -275,9 +273,17 @@ fun FragmentCameraBinding.setSelectionText(fragmentActivity: FragmentActivity, s
     gridLayout.imgCount.text = size.toString()
 }
 
-fun FragmentImagePickerBinding.longSelectionStatus(
-    enabled: Boolean
-) {
+internal fun FragmentImagePickerBinding.setupClickControls(callback: (Int, Uri) -> Unit) {
+    gridLayout.selectionOk.setOnClickListener { callback(0, Uri.EMPTY) }
+    gridLayout.sendButton.setOnClickListener { callback(0, Uri.EMPTY) }
+    gridLayout.selectionBack.setOnClickListener { callback(1, Uri.EMPTY) }
+    gridLayout.selectionCheck.setOnClickListener {
+        gridLayout.selectionCheck.hide()
+        callback(2, Uri.EMPTY)
+    }
+}
+
+fun FragmentImagePickerBinding.longSelectionStatus(enabled: Boolean) {
     val colorPrimaryDark = root.context.color(R.color.primary_color_pix)
     val colorSurface = root.context.color(R.color.surface_color_pix)
 
@@ -305,3 +311,4 @@ fun FragmentImagePickerBinding.setSelectionText(fragmentActivity: FragmentActivi
     }
     gridLayout.imgCount.text = size.toString()
 }
+

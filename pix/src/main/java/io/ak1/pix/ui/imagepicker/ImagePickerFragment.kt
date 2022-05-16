@@ -26,7 +26,7 @@ import io.ak1.pix.utility.ARG_PARAM_PIX
 import io.ak1.pix.utility.ARG_PARAM_PIX_KEY
 import kotlinx.coroutines.*
 
-class ImagePickerFragment : Fragment(), View.OnTouchListener {
+class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results) -> Unit)? = null) : Fragment(), View.OnTouchListener {
 
     private val viewModel: ImagePickerViewModel by viewModels()
     private var _binding: FragmentImagePickerBinding? = null
@@ -112,7 +112,7 @@ class ImagePickerFragment : Fragment(), View.OnTouchListener {
         observeSelectionList()
         retrieveMedia()
         setFastScrollbar()
-
+        setupControls()
     }
 
     private fun setFastScrollbar() {
@@ -200,14 +200,23 @@ class ImagePickerFragment : Fragment(), View.OnTouchListener {
                 viewModel.selectionList.postValue(HashSet())
                 options.preSelectedUrls.clear()
                 val results = set.map { it.contentUrl }
-                //TODO callback eklenecek
-                //resultCallback?.invoke(PixEventCallback.Results(results))
+                resultCallback?.invoke(PixEventCallback.Results(results))
                 PixBus.returnObjects(
                     event = PixEventCallback.Results(
                         results,
                         PixEventCallback.Status.SUCCESS
                     )
                 )
+            }
+        }
+    }
+
+    private fun setupControls() {
+        binding.setupClickControls() { int, _ ->
+            when (int) {
+                0 -> viewModel.returnObjects()
+                1 -> viewModel.returnObjects()
+                2 -> viewModel.longSelection.postValue(true)
             }
         }
     }

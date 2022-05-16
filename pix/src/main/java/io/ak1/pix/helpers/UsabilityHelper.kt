@@ -80,7 +80,11 @@ fun AppCompatActivity.addPixImagePickerToActivity(
     resultCallback: ((PixEventCallback.Results) -> Unit)? = null
 ) {
     supportFragmentManager.beginTransaction()
-        .replace(containerId, ImagePickerFragment()).commit()
+        .replace(containerId, ImagePickerFragment(resultCallback).apply {
+            arguments = Bundle().apply {
+                putParcelable(ARG_PARAM_PIX, options)
+            }
+        }).commit()
 }
 
 
