@@ -123,7 +123,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                     super.onScrolled(recyclerView, dx, dy)
                     showScrollbar(binding.gridLayout.fastscrollScrollbar, requireContext())
                     mViewHeight = binding.gridLayout.fastscrollScrollbar.measuredHeight.toFloat()
-                    handler.post { binding.setViewPositions(getScrollProportion(binding.gridLayout.recyclerView)) }
+                    handler.post { _binding?.setViewPositions(getScrollProportion(_binding?.gridLayout?.recyclerView)) }
                 }
             })
         }
@@ -307,6 +307,11 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
             }
         }
         return false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     override fun onDestroyView() {
