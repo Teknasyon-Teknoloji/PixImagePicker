@@ -19,6 +19,8 @@ internal class ImagePickerViewModel : ViewModel(), PixLifecycle {
     val selectionList: LiveData<MutableSet<Img>> = _selectionList
     private val _callResults by lazy { MutableLiveData<Event<MutableSet<Img>>>() }
     val callResults: LiveData<Event<MutableSet<Img>>> = _callResults
+    private val _onBackPressedResult by lazy { MutableLiveData<Event<MutableSet<Img>>>() }
+    val onBackPressedResult: LiveData<Event<MutableSet<Img>>> = _onBackPressedResult
 
     val longSelectionValue: Boolean
         get() {
@@ -90,6 +92,7 @@ internal class ImagePickerViewModel : ViewModel(), PixLifecycle {
     }
 
     fun returnObjects() = _callResults.postValue(Event(_selectionList.value ?: HashSet()))
+    fun returnBackPressed() = _onBackPressedResult.postValue(Event(HashSet()))
 
     fun setOptions(options: Options) {
         this.options = options

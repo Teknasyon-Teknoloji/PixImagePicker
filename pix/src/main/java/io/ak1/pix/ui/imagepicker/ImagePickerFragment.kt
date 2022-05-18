@@ -176,8 +176,6 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
         }
     }
 
-
-
     private fun backPressController() {
         CoroutineScope(Dispatchers.Main).launch {
             PixBus.on(this) {
@@ -229,6 +227,20 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                 )
             }
         }
+        viewModel.onBackPressedResult.observe(requireActivity()) { event ->
+            event?.getContentIfNotHandledOrReturnNull()?.let { set ->
+                viewModel.changeSelectionList(HashSet())
+                options.preSelectedUrls.clear()
+                val results = set.map { it.contentUrl }
+                resultCallback?.invoke(PixEventCallback.Results(results, PixEventCallback.Status.BACK_PRESSED))
+                PixBus.returnObjects(
+                    event = PixEventCallback.Results(
+                        results,
+                        PixEventCallback.Status.BACK_PRESSED
+                    )
+                )
+            }
+        }
     }
 
     private fun setupControls() {
@@ -243,7 +255,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
 
     private fun onPressedBackButton(){
         viewModel.selectionList.value?.clear()
-        viewModel.returnObjects()
+        viewModel.returnBackPressed()
     }
 
     private fun retrieveMedia() {
