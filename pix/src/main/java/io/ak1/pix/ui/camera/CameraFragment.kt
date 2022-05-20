@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.MainThread
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -59,7 +58,7 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
         super.onCreate(savedInstanceState)
         options = arguments?.getParcelable(ARG_PARAM_PIX) ?: Options()
         requireActivity().let {
-            it.setupScreen()
+            it.setupScreenForCamera()
             it.actionBar?.hide()
             colorPrimaryDark = it.color(R.color.primary_color_pix)
         }
