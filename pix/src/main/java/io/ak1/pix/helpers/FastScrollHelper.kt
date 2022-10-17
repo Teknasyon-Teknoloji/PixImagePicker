@@ -10,6 +10,7 @@ import android.view.ViewPropertyAnimator
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import io.ak1.pix.R
+import io.ak1.pix.adapters.MainImageAdapter
 import io.ak1.pix.databinding.FragmentImagePickerBinding
 import io.ak1.pix.ui.imagepicker.ImagePickerFragment
 import io.ak1.pix.utility.sScrollbarAnimDuration
@@ -155,7 +156,10 @@ fun FragmentImagePickerBinding.hideBubble() {
     }
 }
 
-fun FragmentImagePickerBinding.setRecyclerViewPosition(y: Float) {
+fun FragmentImagePickerBinding.setRecyclerViewPosition(
+    y: Float,
+    mainImageAdapter: MainImageAdapter
+) {
     if (gridLayout.recyclerView.adapter != null) {
         val itemCount = gridLayout.recyclerView.adapter!!.itemCount
         val proportion: Float = when {

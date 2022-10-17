@@ -26,7 +26,8 @@ import io.ak1.pix.utility.ARG_PARAM_PIX
 import io.ak1.pix.utility.ARG_PARAM_PIX_KEY
 import kotlinx.coroutines.*
 
-class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results) -> Unit)? = null) : Fragment(), View.OnTouchListener {
+class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results) -> Unit)? = null) :
+    Fragment(), View.OnTouchListener {
 
     private val viewModel: ImagePickerViewModel by viewModels()
     private var _binding: FragmentImagePickerBinding? = null
@@ -34,6 +35,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
     private var scope = CoroutineScope(Dispatchers.IO)
     private lateinit var options: Options
     internal val mScrollbarHider = Runnable { _binding?.hideScrollbar() }
+    private lateinit var mainImageAdapter: MainImageAdapter
 
     private var permReqLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -148,7 +150,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                         requireActivity().applicationContext.toast(size)
                         return@onImageSelected false
                     }
-                    position.selection(it)
+                    mainImageAdapter.select(it, position)
                     return@onImageSelected true
                 }
             }
@@ -160,7 +162,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                         requireActivity().applicationContext.toast(size)
                         return@onImageLongSelected false
                     }
-                    position.selection(it)
+                    mainImageAdapter.select(it, position)
                     return@onImageLongSelected true
                 }
         }
@@ -232,7 +234,12 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                 viewModel.changeSelectionList(HashSet())
                 options.preSelectedUrls.clear()
                 val results = set.map { it.contentUrl }
-                resultCallback?.invoke(PixEventCallback.Results(results, PixEventCallback.Status.BACK_PRESSED))
+                resultCallback?.invoke(
+                    PixEventCallback.Results(
+                        results,
+                        PixEventCallback.Status.BACK_PRESSED
+                    )
+                )
                 PixBus.returnObjects(
                     event = PixEventCallback.Results(
                         results,
@@ -253,7 +260,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
         }
     }
 
-    private fun onPressedBackButton(){
+    private fun onPressedBackButton() {
         viewModel.selectionList.value?.clear()
         viewModel.returnBackPressed()
     }
@@ -300,7 +307,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                     showBubble()
                     val y = event.rawY
                     setViewPositions(y - toolbarHeight)
-                    setRecyclerViewPosition(y)
+                    setRecyclerViewPosition(y, mainImageAdapter)
                     v?.parent?.requestDisallowInterceptTouchEvent(true)
                 }
 
@@ -309,7 +316,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
             MotionEvent.ACTION_MOVE -> {
                 val y = event.rawY
                 binding.setViewPositions(y - toolbarHeight)
-                binding.setRecyclerViewPosition(y)
+                binding.setRecyclerViewPosition(y, mainImageAdapter)
                 return true
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {

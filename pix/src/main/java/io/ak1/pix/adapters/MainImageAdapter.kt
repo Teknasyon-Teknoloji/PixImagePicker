@@ -34,7 +34,7 @@ import io.ak1.pix.utility.WIDTH
  * https://ak1.io
  */
 
-internal class MainImageAdapter(context: Context, internal val spanCount: Int) :
+class MainImageAdapter(context: Context, internal val spanCount: Int) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     StickyHeaderInterface,
     SectionIndexer, ListPreloader.PreloadModelProvider<Img> {
