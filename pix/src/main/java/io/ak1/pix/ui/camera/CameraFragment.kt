@@ -105,7 +105,6 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
         }
         observeSelectionList()
         setupControls()
-        backPressController()
     }
 
     override fun onDestroyView() {
@@ -130,25 +129,6 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
                         PixEventCallback.Status.SUCCESS
                     )
                 )
-            }
-        }
-    }
-
-    private fun backPressController() {
-        CoroutineScope(Dispatchers.Main).launch {
-            PixBus.on(this) {
-                val list = model.selectionList.value ?: HashSet()
-                when {
-                    list.size > 0 -> {
-                        for (img in list) {
-                            mainImageAdapter.select(false, img.position)
-                        }
-                        model.selectionList.postValue(HashSet())
-                    }
-                    else -> {
-                        model.returnObjects()
-                    }
-                }
             }
         }
     }
