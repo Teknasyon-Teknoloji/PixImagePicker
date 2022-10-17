@@ -26,7 +26,7 @@ import kotlin.coroutines.cancellation.CancellationException
  * https://ak1.io
  */
 
-class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> Unit)? = null) : Fragment() {
+class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : Fragment() {
 
     private val model: CameraViewModel by viewModels()
     private var _binding: FragmentCameraBinding? = null
@@ -122,13 +122,7 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
                 model.selectionList.postValue(HashSet())
                 options.preSelectedUrls.clear()
                 val results = set.map { it.contentUrl }
-                resultCallback?.invoke(PixEventCallback.Results(results))
-                PixBus.returnObjects(
-                    event = PixEventCallback.Results(
-                        results,
-                        PixEventCallback.Status.SUCCESS
-                    )
-                )
+                resultCallback?.invoke(Results(results))
             }
         }
     }

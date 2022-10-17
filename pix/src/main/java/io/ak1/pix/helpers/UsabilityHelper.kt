@@ -24,60 +24,19 @@ import kotlinx.coroutines.launch
  * https://ak1.io
  */
 
-open class PixEventCallback {
-
-    enum class Status {
-        SUCCESS, BACK_PRESSED
-    }
-
-    data class Results(
-        var data: List<Uri> = ArrayList(),
-        var status: Status = Status.SUCCESS
-    )
-
-    private val backPressedEvents = MutableSharedFlow<Any>()
-    private val outputEvents = MutableSharedFlow<Results>()
-
-    fun onBackPressedEvent() {
-        CoroutineScope(Dispatchers.IO).launch {
-            backPressedEvents.emit(Any())
-        }
-
-    }
-
-
-    suspend fun on(
-        coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main),
-        handler: suspend (Any) -> Unit
-    ) = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
-        backPressedEvents.asSharedFlow().collect {
-            handler(it)
-        }
-    }
-
-    fun returnObjects(
-        coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO),
-        event: Results
-    ) = coroutineScope.launch {
-        outputEvents.emit(event)
-    }
-
-
-    fun results(
-        coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main),
-        handler: suspend (Results) -> Unit
-    ) = coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
-        outputEvents.asSharedFlow().collect { handler(it) }
-    }
+enum class Status {
+    SUCCESS, BACK_PRESSED
 }
 
-object PixBus : PixEventCallback()
-
+data class Results(
+    var data: List<Uri> = ArrayList(),
+    var status: Status = Status.SUCCESS
+)
 
 fun AppCompatActivity.addPixImagePickerToActivity(
     containerId: Int,
     options: Options?,
-    resultCallback: ((PixEventCallback.Results) -> Unit)? = null
+    resultCallback: ((Results) -> Unit)? = null
 ) {
     supportFragmentManager.beginTransaction()
         .replace(containerId, ImagePickerFragment(resultCallback).apply {
@@ -91,7 +50,7 @@ fun AppCompatActivity.addPixImagePickerToActivity(
 fun AppCompatActivity.addPixCameraToActivity(
     containerId: Int,
     options: Options?,
-    resultCallback: ((PixEventCallback.Results) -> Unit)? = null
+    resultCallback: ((Results) -> Unit)? = null
 ) {
     supportFragmentManager.beginTransaction()
         .replace(containerId, CameraFragment(resultCallback).apply {
@@ -103,7 +62,7 @@ fun AppCompatActivity.addPixCameraToActivity(
 
 fun cameraFragment(
     options: Options,
-    resultCallback: ((PixEventCallback.Results) -> Unit)? = null
+    resultCallback: ((Results) -> Unit)? = null
 ): CameraFragment {
 
     return CameraFragment(resultCallback).apply {

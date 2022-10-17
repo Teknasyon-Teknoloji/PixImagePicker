@@ -47,8 +47,8 @@ Then pass this config to the pix fragment either via
 ```kotlin
      addPixToActivity(R.id.container, options) {
           when (it.status) {
-              PixEventCallback.Status.SUCCESS -> //use results as it.data
-              PixEventCallback.Status.BACK_PRESSED -> // back pressed called
+              Status.SUCCESS -> //use results as it.data
+              Status.BACK_PRESSED -> // back pressed called
           }
       }
 ```
@@ -60,8 +60,8 @@ The results can be retrieved via the constructor callback from the fragment
 ```kotlin
     pixFragment(options){
         when (it.status) {
-            PixEventCallback.Status.SUCCESS -> //use results as it.data
-            PixEventCallback.Status.BACK_PRESSED -> // back pressed called
+            Status.SUCCESS -> //use results as it.data
+            Status.BACK_PRESSED -> // back pressed called
         }
     }
 ```
@@ -69,8 +69,8 @@ Or can be retrieved by anywhere in the Application from the state flow eventbus
 ```kotlin
     PixBus.results {
         when (it.status) {
-             PixEventCallback.Status.SUCCESS ->  //use results as it.data
-             PixEventCallback.Status.BACK_PRESSED -> // back pressed called
+             Status.SUCCESS ->  //use results as it.data
+             Status.BACK_PRESSED -> // back pressed called
         }
     }
 ```

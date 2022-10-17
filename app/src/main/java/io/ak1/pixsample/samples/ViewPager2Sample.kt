@@ -107,25 +107,7 @@ class ViewPager2Sample : AppCompatActivity() {
         }
 
         supportActionBar?.hide()
-        PixBus.results {
-            when (it.status) {
-                PixEventCallback.Status.SUCCESS -> {
-                    binding.viewPager.currentItem = 1
-                    viewPagerResultsFragment.setList(it.data)
-                }
-                PixEventCallback.Status.BACK_PRESSED -> {
-                    binding.viewPager.currentItem = 1
-                }
-            }
-        }
-    }
 
-    override fun onBackPressed() {
-        when (binding.viewPager.currentItem) {
-            0 -> PixBus.onBackPressedEvent()
-            1 -> super.onBackPressed()
-            else -> binding.viewPager.currentItem = binding.viewPager.currentItem - 1
-        }
     }
 
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
