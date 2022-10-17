@@ -60,20 +60,6 @@ val Int.counterText: String
         return "$min:$sec"
     }
 
-fun Context.scanPhoto(file: File, callback: ((Uri) -> Unit)? = null) =
-    MediaScannerConnection.scanFile(
-        this,
-        arrayOf(file.toString()),
-        arrayOf(file.name),
-    ) { _, uri ->
-        val mainUri = Uri.withAppendedPath(
-            IMAGE_VIDEO_URI,
-            uri.lastPathSegment
-        )
-        callback?.invoke(mainUri)
-    }
-
-
 fun FragmentActivity.setUpMargins(binding: FragmentImagePickerBinding) {
     val height = if (this@setUpMargins.navigationBarHeight < 50) 0 else this@setUpMargins.navigationBarHeight
     binding.gridLayout.mainContent.updateLayoutParams<ViewGroup.MarginLayoutParams> {

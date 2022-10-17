@@ -129,18 +129,8 @@ class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : 
 
     private fun setupControls() {
         binding.setupClickControls(model, cameraXManager, options) { int, uri ->
-            when (int) {
-                0 -> model.returnObjects()
-                3 -> requireActivity().scanPhoto(uri.toFile()) {
-                    if (model.selectionList.value.isNullOrEmpty()) {
-                        model.selectionList.value?.add(Img(contentUrl = it))
-                        scope.cancel(CancellationException("canceled intentionally"))
-                        model.returnObjects()
-                        return@scanPhoto
-                    }
-                    model.selectionList.value?.add(Img(contentUrl = it))
-                }
-            }
+            model.selectionList.value?.add(Img(contentUrl = uri))
+            model.returnObjects()
         }
     }
 
