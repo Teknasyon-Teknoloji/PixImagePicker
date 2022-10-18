@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
@@ -20,8 +19,6 @@ import io.ak1.pix.utility.ARG_PARAM_PIX
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * Created By Akshay Sharma on 17,June,2021
@@ -134,22 +131,24 @@ class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : 
             when (int) {
                 0 -> model.returnObjects()
                 3 -> {
-                    var client: MediaScannerConnection.MediaScannerConnectionClient? =
-                        object : MediaScannerConnection.MediaScannerConnectionClient {
-                            override fun onScanCompleted(path: String, uri: Uri) {
-                                model.selectionList.value?.add(Img(contentUrl = uri))
-                                model.returnObjects()
-                            }
+                    var connection: MediaScannerConnection? = null
+                    var client: MediaScannerConnection.MediaScannerConnectionClient?
+                    client = object : MediaScannerConnection.MediaScannerConnectionClient {
+                        override fun onScanCompleted(path: String, uri: Uri) {
+                            connection?.disconnect()
+                            client = null
+                            model.selectionList.value?.add(Img(contentUrl = uri))
+                            model.returnObjects()
 
-                            override fun onMediaScannerConnected() {
-                                //handle
-                            }
                         }
-                    MediaScannerConnection(requireContext(), client).apply {
+
+                        override fun onMediaScannerConnected() {
+                            connection?.scanFile(uri.path, null)
+                        }
+                    }
+                    connection = MediaScannerConnection(requireContext(), client)
+                    connection.apply {
                         connect()
-                        scanFile(uri.path, null)
-                        disconnect()
-                        client = null
                     }
                 }
             }
