@@ -1,5 +1,7 @@
 package io.ak1.pix.ui.camera
 
+import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -129,8 +131,23 @@ class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : 
 
     private fun setupControls() {
         binding.setupClickControls(model, cameraXManager, options) { int, uri ->
-            model.selectionList.value?.add(Img(contentUrl = uri))
-            model.returnObjects()
+            var client: MediaScannerConnection.MediaScannerConnectionClient? =
+                object : MediaScannerConnection.MediaScannerConnectionClient {
+                    override fun onScanCompleted(path: String, uri: Uri) {
+                        model.selectionList.value?.add(Img(contentUrl = uri))
+                        model.returnObjects()
+                    }
+
+                    override fun onMediaScannerConnected() {
+                        //handle
+                    }
+                }
+            MediaScannerConnection(requireContext(), client).apply {
+                connect()
+                scanFile(uri.path, null)
+                disconnect()
+                client = null
+            }
         }
     }
 
