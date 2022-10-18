@@ -131,26 +131,30 @@ class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : 
 
     private fun setupControls() {
         binding.setupClickControls(model, cameraXManager, options) { int, uri ->
-            var client: MediaScannerConnection.MediaScannerConnectionClient? =
-                object : MediaScannerConnection.MediaScannerConnectionClient {
-                    override fun onScanCompleted(path: String, uri: Uri) {
-                        model.selectionList.value?.add(Img(contentUrl = uri))
-                        model.returnObjects()
-                    }
+            when (int) {
+                0 -> model.returnObjects()
+                3 -> {
+                    var client: MediaScannerConnection.MediaScannerConnectionClient? =
+                        object : MediaScannerConnection.MediaScannerConnectionClient {
+                            override fun onScanCompleted(path: String, uri: Uri) {
+                                model.selectionList.value?.add(Img(contentUrl = uri))
+                                model.returnObjects()
+                            }
 
-                    override fun onMediaScannerConnected() {
-                        //handle
+                            override fun onMediaScannerConnected() {
+                                //handle
+                            }
+                        }
+                    MediaScannerConnection(requireContext(), client).apply {
+                        connect()
+                        scanFile(uri.path, null)
+                        disconnect()
+                        client = null
                     }
                 }
-            MediaScannerConnection(requireContext(), client).apply {
-                connect()
-                scanFile(uri.path, null)
-                disconnect()
-                client = null
             }
         }
     }
-
 
     private fun CameraXManager.startCamera() {
         setUpCamera(binding)
