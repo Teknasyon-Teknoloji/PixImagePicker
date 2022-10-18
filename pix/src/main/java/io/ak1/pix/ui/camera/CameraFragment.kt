@@ -1,11 +1,12 @@
 package io.ak1.pix.ui.camera
 
+import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
@@ -18,15 +19,13 @@ import io.ak1.pix.utility.ARG_PARAM_PIX
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * Created By Akshay Sharma on 17,June,2021
  * https://ak1.io
  */
 
-class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> Unit)? = null) : Fragment() {
+class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : Fragment() {
 
     private val model: CameraViewModel by viewModels()
     private var _binding: FragmentCameraBinding? = null
@@ -122,13 +121,7 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
                 model.selectionList.postValue(HashSet())
                 options.preSelectedUrls.clear()
                 val results = set.map { it.contentUrl }
-                resultCallback?.invoke(PixEventCallback.Results(results))
-                PixBus.returnObjects(
-                    event = PixEventCallback.Results(
-                        results,
-                        PixEventCallback.Status.SUCCESS
-                    )
-                )
+                resultCallback?.invoke(Results(results))
             }
         }
     }
@@ -137,19 +130,30 @@ class CameraFragment(private val resultCallback: ((PixEventCallback.Results) -> 
         binding.setupClickControls(model, cameraXManager, options) { int, uri ->
             when (int) {
                 0 -> model.returnObjects()
-                3 -> requireActivity().scanPhoto(uri.toFile()) {
-                    if (model.selectionList.value.isNullOrEmpty()) {
-                        model.selectionList.value?.add(Img(contentUrl = it))
-                        scope.cancel(CancellationException("canceled intentionally"))
-                        model.returnObjects()
-                        return@scanPhoto
+                3 -> {
+                    var connection: MediaScannerConnection? = null
+                    var client: MediaScannerConnection.MediaScannerConnectionClient?
+                    client = object : MediaScannerConnection.MediaScannerConnectionClient {
+                        override fun onScanCompleted(path: String, uri: Uri) {
+                            connection?.disconnect()
+                            client = null
+                            model.selectionList.value?.add(Img(contentUrl = uri))
+                            model.returnObjects()
+
+                        }
+
+                        override fun onMediaScannerConnected() {
+                            connection?.scanFile(uri.path, null)
+                        }
                     }
-                    model.selectionList.value?.add(Img(contentUrl = it))
+                    connection = MediaScannerConnection(requireContext(), client)
+                    connection.apply {
+                        connect()
+                    }
                 }
             }
         }
     }
-
 
     private fun CameraXManager.startCamera() {
         setUpCamera(binding)

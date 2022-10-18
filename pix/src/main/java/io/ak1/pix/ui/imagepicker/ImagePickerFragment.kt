@@ -26,7 +26,7 @@ import io.ak1.pix.utility.ARG_PARAM_PIX
 import io.ak1.pix.utility.ARG_PARAM_PIX_KEY
 import kotlinx.coroutines.*
 
-class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results) -> Unit)? = null) :
+class ImagePickerFragment(private val resultCallback: ((Results) -> Unit)? = null) :
     Fragment(), View.OnTouchListener {
 
     private val viewModel: ImagePickerViewModel by viewModels()
@@ -115,7 +115,6 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
         retrieveMedia()
         setFastScrollbar()
         setupControls()
-        backPressController()
     }
 
     private fun setFastScrollbar() {
@@ -178,25 +177,6 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
         }
     }
 
-    private fun backPressController() {
-        CoroutineScope(Dispatchers.Main).launch {
-            PixBus.on(this) {
-                val list = viewModel.selectionList.value ?: HashSet()
-                when {
-                    list.size > 0 -> {
-                        for (img in list) {
-                            mainImageAdapter.select(false, img.position)
-                        }
-                        viewModel.changeSelectionList(HashSet())
-                    }
-                    else -> {
-                        viewModel.returnObjects()
-                    }
-                }
-            }
-        }
-    }
-
     private fun observeSelectionList() {
         viewModel.setOptions(options)
         viewModel.imageList.observe(requireActivity()) {
@@ -220,13 +200,7 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                 viewModel.changeSelectionList(HashSet())
                 options.preSelectedUrls.clear()
                 val results = set.map { it.contentUrl }
-                resultCallback?.invoke(PixEventCallback.Results(results))
-                PixBus.returnObjects(
-                    event = PixEventCallback.Results(
-                        results,
-                        PixEventCallback.Status.SUCCESS
-                    )
-                )
+                resultCallback?.invoke(Results(results))
             }
         }
         viewModel.onBackPressedResult.observe(requireActivity()) { event ->
@@ -235,15 +209,9 @@ class ImagePickerFragment(private val resultCallback: ((PixEventCallback.Results
                 options.preSelectedUrls.clear()
                 val results = set.map { it.contentUrl }
                 resultCallback?.invoke(
-                    PixEventCallback.Results(
+                    Results(
                         results,
-                        PixEventCallback.Status.BACK_PRESSED
-                    )
-                )
-                PixBus.returnObjects(
-                    event = PixEventCallback.Results(
-                        results,
-                        PixEventCallback.Status.BACK_PRESSED
+                        Status.BACK_PRESSED
                     )
                 )
             }
