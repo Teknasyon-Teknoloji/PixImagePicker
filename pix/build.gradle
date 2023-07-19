@@ -3,15 +3,16 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id 'com.github.dcendents.android-maven'
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 6
         versionName "1.5.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -62,7 +63,7 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     // Skip this if you don't want to use integration libraries or configure Glide.
-    kapt 'com.github.bumptech.glide:compiler:4.12.0'
+//    kapt 'com.github.bumptech.glide:compiler:4.12.0'
     implementation ('com.github.bumptech.glide:recyclerview-integration:4.12.0') {
         // Excludes the support library because it's already included by Glide.
         transitive = false
