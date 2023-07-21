@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_video_counter_pix"
+        android:paddingHorizontal="16dp"
+        android:id="@+id/camera_top_bar_layout"
+        tools:background="@android:color/black">
+
+        <ImageView
+            android:id="@+id/close_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_white_transparent_circle"
+            android:contentDescription="@string/camera_flash_button"
+            android:padding="12dp"
+            android:src="@drawable/ic_close" />
+
+        <LinearLayout
+            android:id="@+id/video_counter_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal|top"
+            android:elevation="100dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:background="@android:color/black">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="14.5dp"
+                    android:layout_height="14.5dp"
+                    android:layout_gravity="center"
+                    android:padding="1dp" />
+
+                <ProgressBar
+                    android:id="@+id/video_pbr"
+                    style="?android:progressBarStyleHorizontal"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center"
+                    android:indeterminate="false"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/circle_pbr"
+                    android:rotation="-90" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/video_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="9dp"
+                android:text="@string/pix_counter_number"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/flash_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/bg_white_transparent_circle">
+
+            <ImageView
+                android:id="@+id/flash_image"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/camera_flash_button"
+                android:padding="12dp"
+                android:src="@drawable/ic_flash_off_black_24dp" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</merge>

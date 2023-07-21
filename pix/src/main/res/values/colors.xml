@@ -5,4 +5,5 @@
     <color name="primary_light_color_pix">#80075e54</color>
     <color name="surface_color_pix">#ffffff</color>
     <color name="text_color_pix">#807f7f</color>
+    <color name="icons_white_transparent_color_pix">#33FFFFFF</color>
 </resources>

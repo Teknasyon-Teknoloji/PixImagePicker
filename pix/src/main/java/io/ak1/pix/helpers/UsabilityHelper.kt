@@ -6,18 +6,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
-import io.ak1.pix.ui.camera.CameraFragment
 import io.ak1.pix.models.Options
+import io.ak1.pix.ui.camera.CameraFragment
 import io.ak1.pix.ui.imagepicker.ImagePickerFragment
 import io.ak1.pix.utility.ARG_PARAM_PIX
 import io.ak1.pix.utility.ARG_PARAM_PIX_KEY
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 /**
  * Created By Akshay Sharma on 17,June,2021
@@ -45,7 +38,6 @@ fun AppCompatActivity.addPixImagePickerToActivity(
             }
         }).commit()
 }
-
 
 fun AppCompatActivity.addPixCameraToActivity(
     containerId: Int,

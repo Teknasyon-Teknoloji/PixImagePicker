@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import io.ak1.pix.helpers.*
+import io.ak1.pix.helpers.Status
+import io.ak1.pix.helpers.addPixCameraToActivity
+import io.ak1.pix.helpers.setupScreen
+import io.ak1.pix.helpers.showStatusBar
 import io.ak1.pixsample.R
 import io.ak1.pixsample.TAG
 import io.ak1.pixsample.commons.Adapter
@@ -45,7 +48,7 @@ class FragmentSample : AppCompatActivity() {
                     resultsFragment.setList(it.data)
                 }
                 Status.BACK_PRESSED -> {
-                    supportFragmentManager.popBackStack()
+                    finish()
                 }
             }
 

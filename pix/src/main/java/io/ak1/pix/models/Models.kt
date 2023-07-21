@@ -38,7 +38,9 @@ class Options : Parcelable {
     var mode = Mode.All
     var flash = Flash.Auto
     var preSelectedUrls = ArrayList<Uri>()
-    var videoOptions : VideoOptions = VideoOptions()
+    var videoOptions: VideoOptions = VideoOptions()
+    var additionalBottomTextDescription: String = ""
+    var showGalleryButton: Boolean = false
 }
 
 @Parcelize

@@ -9,12 +9,24 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import io.ak1.pix.R
 import io.ak1.pix.databinding.FragmentCameraBinding
-import io.ak1.pix.helpers.*
+import io.ak1.pix.helpers.CameraXManager
+import io.ak1.pix.helpers.Results
+import io.ak1.pix.helpers.Status
+import io.ak1.pix.helpers.color
+import io.ak1.pix.helpers.hide
+import io.ak1.pix.helpers.hideStatusBar
+import io.ak1.pix.helpers.permissionsFilter
+import io.ak1.pix.helpers.setDrawableIconForFlash
+import io.ak1.pix.helpers.setupClickControls
+import io.ak1.pix.helpers.setupScreenForCamera
+import io.ak1.pix.helpers.show
 import io.ak1.pix.models.Img
 import io.ak1.pix.models.Options
+import io.ak1.pix.ui.imagepicker.ImagePickerFragment
 import io.ak1.pix.utility.ARG_PARAM_PIX
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +36,6 @@ import kotlinx.coroutines.cancel
  * Created By Akshay Sharma on 17,June,2021
  * https://ak1.io
  */
-
 class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : Fragment() {
 
     private val model: CameraViewModel by viewModels()
@@ -99,6 +110,7 @@ class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : 
     private fun initialise(context: FragmentActivity) {
         binding.permissionsLayout.permissionsLayout.hide()
         binding.gridLayout.gridLayout.show()
+        binding.gridLayout.textAdditionalDescription.text = options.additionalBottomTextDescription
         cameraXManager = CameraXManager(binding.viewFinder, context, options).apply {
             startCamera()
         }
@@ -118,18 +130,44 @@ class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : 
 
         model.callResults.observe(requireActivity()) { event ->
             event?.getContentIfNotHandledOrReturnNull()?.let { set ->
-                model.selectionList.postValue(HashSet())
-                options.preSelectedUrls.clear()
-                val results = set.map { it.contentUrl }
-                resultCallback?.invoke(Results(results))
+                triggerResultCallback(
+                    contentSet = set,
+                    status = Status.SUCCESS
+                )
             }
         }
+
+        model.onBackPressedResult.observe(requireActivity()) { event ->
+            event?.getContentIfNotHandledOrReturnNull()?.let { set ->
+                triggerResultCallback(
+                    contentSet = set,
+                    status = Status.BACK_PRESSED
+                )
+            }
+        }
+    }
+
+    private fun triggerResultCallback(
+        contentSet: MutableSet<Img>,
+        status: Status
+    ) {
+        model.selectionList.postValue(HashSet())
+        options.preSelectedUrls.clear()
+        val results = contentSet.map { it.contentUrl }
+        resultCallback?.invoke(
+            Results(
+                data = results,
+                status = status
+            )
+        )
     }
 
     private fun setupControls() {
         binding.setupClickControls(model, cameraXManager, options) { int, uri ->
             when (int) {
                 0 -> model.returnObjects()
+                1 -> model.onBackPressed()
+                2 -> openGalleryScreen()
                 3 -> {
                     var connection: MediaScannerConnection? = null
                     var client: MediaScannerConnection.MediaScannerConnectionClient?
@@ -155,9 +193,27 @@ class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : 
         }
     }
 
+    private fun openGalleryScreen() {
+        val imagePickerResultCallback: ((Results) -> Unit) = { result: Results ->
+            when (result.status) {
+                Status.SUCCESS -> resultCallback?.invoke(result)
+                Status.BACK_PRESSED -> childFragmentManager.popBackStack()
+            }
+        }
+        val imagePickerFragment = ImagePickerFragment(imagePickerResultCallback).apply {
+            arguments = Bundle().apply {
+                putParcelable(ARG_PARAM_PIX, options)
+            }
+        }
+        childFragmentManager.commit {
+            add(R.id.container, imagePickerFragment, "")
+            addToBackStack(null)
+        }
+    }
+
     private fun CameraXManager.startCamera() {
         setUpCamera(binding)
-        binding.gridLayout.controlsLayout.flashButton.show()
+        binding.cameraTopBarLayout.flashButton.show()
         binding.setDrawableIconForFlash(options)
     }
 

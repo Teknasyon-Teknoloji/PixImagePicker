@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/grid_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        tools:background="@android:color/black">
 
         <include
             android:id="@+id/controls_layout"
             layout="@layout/controls_layout" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/text_additional_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:elevation="12dp"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            tools:text="Hold for video, tap for photo" />
+
+    </LinearLayout>
 
 </merge>

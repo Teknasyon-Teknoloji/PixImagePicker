@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
         android:id="@+id/controls_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        tools:background="@android:color/black">
 
         <ImageView
             android:id="@+id/primary_click_background"
@@ -27,37 +28,38 @@
             android:background="@drawable/ring"
             android:contentDescription="@string/click_button" />
 
-        <FrameLayout
-            android:id="@+id/flash_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <ImageView
+            android:id="@+id/gallery_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="top|left"
-            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="47dp"
-            android:background="@drawable/circle"
-            android:padding="11dp"
-            android:visibility="gone">
+            android:background="@drawable/bg_white_transparent_circle"
+            android:contentDescription="@string/lens_facing_button"
+            android:padding="12dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:src="@drawable/ic_gallery" />
+
+        <FrameLayout
+            android:id="@+id/change_camera_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="47dp"
+            android:layout_marginEnd="50dp"
+            android:layout_gravity="top|right"
+            android:background="@drawable/bg_white_transparent_circle">
 
             <ImageView
-                android:id="@+id/flash_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/camera_flash_button"
-                android:src="@drawable/ic_flash_off_black_24dp" />
+                android:id="@+id/lens_facing"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/lens_facing_button"
+                android:padding="12dp"
+                android:src="@drawable/ic_photo_camera" />
+
         </FrameLayout>
-
-        <ImageView
-            android:id="@+id/lens_facing"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="top|right"
-            android:layout_marginTop="47dp"
-            android:layout_marginRight="50dp"
-            android:background="@drawable/circle"
-            android:contentDescription="@string/lens_facing_button"
-            android:padding="11dp"
-            android:src="@drawable/ic_photo_camera" />
-
 
     </FrameLayout>
 

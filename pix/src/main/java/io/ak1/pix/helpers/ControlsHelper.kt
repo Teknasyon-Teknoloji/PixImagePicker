@@ -14,14 +14,15 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import androidx.camera.core.ImageCapture
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import io.ak1.pix.R
 import io.ak1.pix.databinding.FragmentCameraBinding
 import io.ak1.pix.databinding.FragmentImagePickerBinding
-import io.ak1.pix.ui.camera.CameraViewModel
 import io.ak1.pix.models.Flash
 import io.ak1.pix.models.Mode
 import io.ak1.pix.models.Options
+import io.ak1.pix.ui.camera.CameraViewModel
 import io.ak1.pix.utility.TAG
 
 /**
@@ -30,7 +31,7 @@ import io.ak1.pix.utility.TAG
  */
 
 fun FragmentCameraBinding.setDrawableIconForFlash(options: Options) {
-    gridLayout.controlsLayout.flashImage.setImageResource(
+    cameraTopBarLayout.flashImage.setImageResource(
         when (options.flash) {
             Flash.Off -> R.drawable.ic_flash_off_black_24dp
             Flash.On -> R.drawable.ic_flash_on_black_24dp
@@ -77,6 +78,14 @@ internal fun FragmentCameraBinding.setupClickControls(
     options: Options,
     callback: (Int, Uri) -> Unit
 ) {
+    with(gridLayout.controlsLayout.galleryImage) {
+        isVisible = options.showGalleryButton
+        setOnClickListener { callback(2, Uri.EMPTY) }
+    }
+
+    cameraTopBarLayout.closeImage.setOnClickListener {
+        callback(1, Uri.EMPTY)
+    }
     gridLayout.controlsLayout.primaryClickButton.apply {
         var videoCounterProgress: Int
 
@@ -105,22 +114,22 @@ internal fun FragmentCameraBinding.setupClickControls(
             }
             callback(4, Uri.EMPTY)
             isRecording = true
-            videoCounterLayout.videoCounterLayout.show()
+            cameraTopBarLayout.cameraTopBarLayout.show()
             videoCounterProgress = 0
-            videoCounterLayout.videoPbr.progress = 0
+            cameraTopBarLayout.videoPbr.progress = 0
             videoCounterRunnable = object : Runnable {
                 override fun run() {
                     ++videoCounterProgress
 
-                    videoCounterLayout.videoPbr.progress = videoCounterProgress
-                    videoCounterLayout.videoCounter.text =
+                    cameraTopBarLayout.videoPbr.progress = videoCounterProgress
+                    cameraTopBarLayout.videoCounter.text =
                         videoCounterProgress.counterText
 
 
                     if (videoCounterProgress > options.videoOptions.videoDurationLimitInSeconds) {
                         callback(5, Uri.EMPTY)
                         isRecording = false
-                        videoCounterLayout.videoCounterLayout.hide()
+                        cameraTopBarLayout.cameraTopBarLayout.hide()
                         videoCounterHandler.removeCallbacks(videoCounterRunnable)
                         videoRecordingEndAnim()
                         cameraXManager?.videoCapture?.stopRecording()
@@ -132,8 +141,8 @@ internal fun FragmentCameraBinding.setupClickControls(
             videoCounterHandler.postDelayed(videoCounterRunnable, 1000)
             videoRecordingStartAnim()
             val maxVideoDuration = options.videoOptions.videoDurationLimitInSeconds
-            videoCounterLayout.videoPbr.max = maxVideoDuration / 1000
-            videoCounterLayout.videoPbr.invalidate()
+            cameraTopBarLayout.videoPbr.max = maxVideoDuration / 1000
+            cameraTopBarLayout.videoPbr.invalidate()
             cameraXManager?.takeVideo { uri, exc ->
                 if (exc == null) {
                     callback(3, uri)
@@ -168,7 +177,7 @@ internal fun FragmentCameraBinding.setupClickControls(
             if ((event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) && isRecording) {
                 callback(5, Uri.EMPTY)
                 isRecording = false
-                videoCounterLayout.videoCounterLayout.hide()
+                cameraTopBarLayout.cameraTopBarLayout.hide()
                 videoCounterHandler.removeCallbacks(videoCounterRunnable)
                 videoRecordingEndAnim()
                 cameraXManager?.videoCapture?.stopRecording()
@@ -176,7 +185,7 @@ internal fun FragmentCameraBinding.setupClickControls(
             false
         }
     }
-    gridLayout.controlsLayout.flashButton.setOnClickForFLash(options) {
+    cameraTopBarLayout.flashButton.setOnClickForFLash(options) {
         setDrawableIconForFlash(it)
         cameraXManager?.imageCapture?.flashMode = when (options.flash) {
             Flash.Auto -> ImageCapture.FLASH_MODE_AUTO
