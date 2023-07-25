@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.commit
@@ -111,6 +113,12 @@ class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : 
         binding.permissionsLayout.permissionsLayout.hide()
         binding.gridLayout.gridLayout.show()
         binding.gridLayout.textAdditionalDescription.text = options.additionalBottomTextDescription
+        with(binding.cameraTopBarLayout.closeImage) {
+            isVisible = options.cameraScreenBackButtonIcon != null
+            options.cameraScreenBackButtonIcon?.let {
+                setImageDrawable(ContextCompat.getDrawable(context, it))
+            }
+        }
         cameraXManager = CameraXManager(binding.viewFinder, context, options).apply {
             startCamera()
         }

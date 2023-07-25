@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
+        android:id="@+id/camera_top_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_video_counter_pix"
         android:paddingHorizontal="16dp"
-        android:id="@+id/camera_top_bar_layout"
         tools:background="@android:color/black">
 
         <ImageView
@@ -17,7 +18,7 @@
             android:background="@drawable/bg_white_transparent_circle"
             android:contentDescription="@string/camera_flash_button"
             android:padding="12dp"
-            android:src="@drawable/ic_close" />
+            app:tint="@android:color/white" />
 
         <LinearLayout
             android:id="@+id/video_counter_layout"
@@ -28,8 +29,8 @@
             android:elevation="100dp"
             android:orientation="horizontal"
             android:visibility="gone"
-            tools:visibility="visible"
-            tools:background="@android:color/black">
+            tools:background="@android:color/black"
+            tools:visibility="visible">
 
             <FrameLayout
                 android:layout_width="wrap_content"

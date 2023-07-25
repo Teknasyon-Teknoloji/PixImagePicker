@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         val sp = PreferenceManager.getDefaultSharedPreferences(mainActivity)
         return Options().apply {
             isFrontFacing = sp.getBoolean("frontFacing", false)
+            cameraScreenBackButtonIcon = R.drawable.ic_arrow_back_black_24dp
             additionalBottomTextDescription = "Hold for video, tap for photo"
             showGalleryButton = true
             ratio = when (sp.getString("ratio", "0")) {

@@ -3,6 +3,7 @@ package io.ak1.pix.models
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
 import kotlinx.parcelize.IgnoredOnParcel
 
 import kotlinx.parcelize.Parcelize
@@ -41,6 +42,8 @@ class Options : Parcelable {
     var videoOptions: VideoOptions = VideoOptions()
     var additionalBottomTextDescription: String = ""
     var showGalleryButton: Boolean = false
+    @DrawableRes
+    var cameraScreenBackButtonIcon: Int? = null
 }
 
 @Parcelize
