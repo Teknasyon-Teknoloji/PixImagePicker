@@ -1,8 +1,6 @@
 package io.ak1.pix.helpers
 
 import android.content.Context
-import android.media.MediaScannerConnection
-import android.net.Uri
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +16,6 @@ import io.ak1.pix.R
 import io.ak1.pix.adapters.MainImageAdapter
 import io.ak1.pix.databinding.FragmentImagePickerBinding
 import io.ak1.pix.utility.HeaderItemDecoration
-import io.ak1.pix.utility.IMAGE_VIDEO_URI
-import java.io.File
 
 /**
  * Created By Akshay Sharma on 17,June,2021
@@ -69,17 +65,6 @@ fun FragmentActivity.setUpMargins(binding: FragmentImagePickerBinding) {
             0,
             height
         )
-    }
-
-    binding.gridLayout.sendButton.apply {
-        updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            updateMargins(
-                0,
-                0,
-                this@apply.context.toPx(16f).toInt(),
-                this@apply.context.toPx(16f).toInt() + height
-            )
-        }
     }
 }
 
