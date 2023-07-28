@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import androidx.camera.core.ImageCapture
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import io.ak1.pix.R
@@ -231,21 +230,7 @@ internal fun FragmentImagePickerBinding.setupClickControls(callback: (Int, Uri) 
 }
 
 fun FragmentImagePickerBinding.longSelectionStatus(enabled: Boolean) {
-    val colorPrimaryDark = root.context.color(R.color.primary_color_pix)
-    val colorSurface = root.context.color(R.color.surface_color_pix)
-
-    if (enabled) {
-        gridLayout.selectionCheck.hide()
-        gridLayout.selectionCount.setTextColor(colorSurface)
-        gridLayout.topbar.setBackgroundColor(colorPrimaryDark)
-        DrawableCompat.setTint(gridLayout.selectionBack.drawable, colorSurface)
-        DrawableCompat.setTint(gridLayout.selectionCheck.drawable, colorSurface)
-    } else {
-        gridLayout.selectionCheck.show()
-        DrawableCompat.setTint(gridLayout.selectionBack.drawable, colorPrimaryDark)
-        DrawableCompat.setTint(gridLayout.selectionCheck.drawable, colorPrimaryDark)
-        gridLayout.topbar.setBackgroundColor(colorSurface)
-    }
+    gridLayout.selectionCheck.isVisible = !enabled
 }
 
 fun FragmentImagePickerBinding.setSelectionText(fragmentActivity: FragmentActivity, size: Int = 0) {
