@@ -89,8 +89,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
-                            android:paddingLeft="15dp"
-                            android:src="@drawable/ic_arrow_back_black_24dp" />
+                            android:paddingHorizontal="16dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_arrow_back_black_24dp"
+                            app:tint="@android:color/black" />
 
                         <TextView
                             android:id="@+id/selection_count"
@@ -100,7 +102,7 @@
                             android:layout_marginLeft="50dp"
                             android:layout_marginRight="10dp"
                             android:gravity="center_vertical"
-                            android:textColor="#fff"
+                            android:textColor="@android:color/black"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -112,17 +114,19 @@
                             android:gravity="center_vertical"
                             android:padding="20dp"
                             android:text="@string/pix_ok"
-                            android:textColor="#fff"
-                            android:textSize="12sp" />
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
 
                         <ImageView
                             android:id="@+id/selection_check"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical|right"
-                            android:layout_marginRight="20dp"
+                            android:paddingHorizontal="20dp"
                             android:gravity="center_vertical"
-                            android:src="@drawable/ic_check_box" />
+                            android:src="@drawable/ic_check_box"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            app:tint="@color/primary_color_pix" />
                     </FrameLayout>
 
                 </FrameLayout>
@@ -154,9 +158,9 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:padding="5dp"
-                tools:text="2"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="2" />
         </FrameLayout>
 
     </FrameLayout>
