@@ -113,7 +113,7 @@ internal fun FragmentCameraBinding.setupClickControls(
             }
             callback(4, Uri.EMPTY)
             isRecording = true
-            cameraTopBarLayout.cameraTopBarLayout.show()
+            cameraTopBarLayout.videoCounterLayout.show()
             videoCounterProgress = 0
             cameraTopBarLayout.videoPbr.progress = 0
             videoCounterRunnable = object : Runnable {
@@ -128,7 +128,7 @@ internal fun FragmentCameraBinding.setupClickControls(
                     if (videoCounterProgress > options.videoOptions.videoDurationLimitInSeconds) {
                         callback(5, Uri.EMPTY)
                         isRecording = false
-                        cameraTopBarLayout.cameraTopBarLayout.hide()
+                        cameraTopBarLayout.videoCounterLayout.hide()
                         videoCounterHandler.removeCallbacks(videoCounterRunnable)
                         videoRecordingEndAnim()
                         cameraXManager?.videoCapture?.stopRecording()
@@ -176,7 +176,7 @@ internal fun FragmentCameraBinding.setupClickControls(
             if ((event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) && isRecording) {
                 callback(5, Uri.EMPTY)
                 isRecording = false
-                cameraTopBarLayout.cameraTopBarLayout.hide()
+                cameraTopBarLayout.videoCounterLayout.hide()
                 videoCounterHandler.removeCallbacks(videoCounterRunnable)
                 videoRecordingEndAnim()
                 cameraXManager?.videoCapture?.stopRecording()

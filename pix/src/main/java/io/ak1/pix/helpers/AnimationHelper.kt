@@ -15,16 +15,20 @@ fun FragmentCameraBinding.videoRecordingStartAnim() {
         duration = 300
         interpolator = adInterpolator
     }.start()
-    cameraTopBarLayout.flashImage.animate().apply {
-        alpha(0f)
-        duration = 300
-        interpolator = adInterpolator
-    }.start()
-    gridLayout.controlsLayout.lensFacing.animate().apply {
-        alpha(0f)
-        duration = 300
-        interpolator = adInterpolator
-    }.start()
+
+    listOf(
+        cameraTopBarLayout.flashButton,
+        cameraTopBarLayout.closeImage,
+        gridLayout.controlsLayout.changeCameraButton,
+        gridLayout.controlsLayout.galleryImage,
+        gridLayout.textAdditionalDescription
+    ).forEach {
+        it.animate().apply {
+            alpha(0f)
+            duration = 300
+            interpolator = adInterpolator
+        }.start()
+    }
 }
 
 fun FragmentCameraBinding.videoRecordingEndAnim() {
@@ -35,14 +39,18 @@ fun FragmentCameraBinding.videoRecordingEndAnim() {
         duration = 300
         interpolator = adInterpolator
     }.start()
-    cameraTopBarLayout.flashImage.animate().apply {
-        alpha(1f)
-        duration = 300
-        interpolator = adInterpolator
-    }.start()
-    gridLayout.controlsLayout.lensFacing.animate().apply {
-        alpha(1f)
-        duration = 300
-        interpolator = adInterpolator
-    }.start()
+
+    listOf(
+        cameraTopBarLayout.flashButton,
+        cameraTopBarLayout.closeImage,
+        gridLayout.controlsLayout.changeCameraButton,
+        gridLayout.controlsLayout.galleryImage,
+        gridLayout.textAdditionalDescription
+    ).forEach {
+        it.animate().apply {
+            alpha(1f)
+            duration = 300
+            interpolator = adInterpolator
+        }.start()
+    }
 }
