@@ -141,7 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="32dp">
+            android:layout_marginBottom="64dp">
 
             <ImageView
                 android:layout_width="@dimen/small_thumb"
