@@ -165,7 +165,8 @@ class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : 
         resultCallback?.invoke(
             Results(
                 data = results,
-                status = status
+                status = status,
+                selectedFromGallery = false
             )
         )
     }

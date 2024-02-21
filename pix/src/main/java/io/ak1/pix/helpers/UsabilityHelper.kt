@@ -23,7 +23,8 @@ enum class Status {
 
 data class Results(
     var data: List<Uri> = ArrayList(),
-    var status: Status = Status.SUCCESS
+    var status: Status = Status.SUCCESS,
+    var selectedFromGallery: Boolean
 )
 
 fun AppCompatActivity.addPixImagePickerToActivity(

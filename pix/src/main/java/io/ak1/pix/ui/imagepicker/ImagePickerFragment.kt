@@ -200,7 +200,7 @@ class ImagePickerFragment(private val resultCallback: ((Results) -> Unit)? = nul
                 viewModel.changeSelectionList(HashSet())
                 options.preSelectedUrls.clear()
                 val results = set.map { it.contentUrl }
-                resultCallback?.invoke(Results(results))
+                resultCallback?.invoke(Results(results, selectedFromGallery = true))
             }
         }
         viewModel.onBackPressedResult.observe(requireActivity()) { event ->
@@ -211,7 +211,8 @@ class ImagePickerFragment(private val resultCallback: ((Results) -> Unit)? = nul
                 resultCallback?.invoke(
                     Results(
                         results,
-                        Status.BACK_PRESSED
+                        Status.BACK_PRESSED,
+                        selectedFromGallery = true
                     )
                 )
             }
@@ -269,8 +270,9 @@ class ImagePickerFragment(private val resultCallback: ((Results) -> Unit)? = nul
                     gridLayout.fastscrollHandle.isSelected = true
                     handler.removeCallbacks(mScrollbarHider)
                     cancelAnimation(mScrollbarAnimator, mBubbleAnimator)
-                    if (gridLayout.fastscrollScrollbar.isVisible.not()&& (gridLayout.recyclerView.computeVerticalScrollRange() - mViewHeight > 0)) {
-                        mScrollbarAnimator = showScrollbar(gridLayout.fastscrollScrollbar, requireActivity())
+                    if (gridLayout.fastscrollScrollbar.isVisible.not() && (gridLayout.recyclerView.computeVerticalScrollRange() - mViewHeight > 0)) {
+                        mScrollbarAnimator =
+                            showScrollbar(gridLayout.fastscrollScrollbar, requireActivity())
                     }
                     showBubble()
                     val y = event.rawY
@@ -281,12 +283,14 @@ class ImagePickerFragment(private val resultCallback: ((Results) -> Unit)? = nul
 
                 return true
             }
+
             MotionEvent.ACTION_MOVE -> {
                 val y = event.rawY
                 binding.setViewPositions(y - toolbarHeight)
                 binding.setRecyclerViewPosition(y, mainImageAdapter)
                 return true
             }
+
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 v?.parent?.requestDisallowInterceptTouchEvent(false)
                 binding.gridLayout.fastscrollHandle.isSelected = false
