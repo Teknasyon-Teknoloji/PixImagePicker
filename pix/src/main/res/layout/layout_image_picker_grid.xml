@@ -137,18 +137,18 @@
 
         <FrameLayout
             android:id="@+id/sendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_gravity="right|bottom"
+            android:background="@drawable/circular_button"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="64dp">
 
             <ImageView
-                android:layout_width="@dimen/small_thumb"
-                android:layout_height="@dimen/small_thumb"
-                android:background="@drawable/circular_button"
-                android:padding="12dp"
-                android:src="@drawable/ic_check_black_24dp" />
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_send_24" />
 
             <TextView
                 android:id="@+id/img_count"

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <solid android:color="@color/primary_color_pix" />
-    <stroke
-        android:width="0.5dp"
-        android:color="@color/primary_color_pix" />
+    android:shape="rectangle">
+    <solid android:color="@color/bg_send_button"/>
+    <corners android:radius="16dp"/>
 </shape>
