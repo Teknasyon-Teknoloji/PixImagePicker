@@ -40,7 +40,6 @@ class ViewPager2Sample : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityViewPager2SampleBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupScreen()
         binding.tabLayout.apply {
             addTab(this.newTab().setIcon(R.drawable.ic_camera))
             val titles = arrayOf("Chat", "Status", "Call")

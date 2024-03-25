@@ -53,7 +53,6 @@ class ImagePickerFragment(private val resultCallback: ((Results) -> Unit)? = nul
         super.onCreate(savedInstanceState)
         options = arguments?.getParcelable(ARG_PARAM_PIX) ?: Options()
         requireActivity().let {
-            it.setupScreen()
             it.actionBar?.hide()
         }
     }
@@ -72,7 +71,6 @@ class ImagePickerFragment(private val resultCallback: ((Results) -> Unit)? = nul
     }
 
     private fun FragmentActivity.setup() {
-        setUpMargins(binding)
         permissions()
         reSetup(this)
         //in case of resetting the options in an live fragment
