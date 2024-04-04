@@ -278,9 +278,7 @@ class CameraXManager(
         // Create time-stamped output file to hold the image
         val photoFile = File(
             getOutputCacheDirectory(),
-            SimpleDateFormat(
-                FILENAME_FORMAT, Locale.US
-            ).format(System.currentTimeMillis()) + ".jpg"
+            "${System.currentTimeMillis()}.jpg"
         )
 
         // Create output options object which contains file + metadata
@@ -311,9 +309,7 @@ class CameraXManager(
     fun takeVideo(callback: (Uri, String?) -> Unit) {
         val videoFile = File(
             getOutputCacheDirectory(),
-            SimpleDateFormat(
-                FILENAME_FORMAT, Locale.US
-            ).format(System.currentTimeMillis()) + ".mp4"
+            "${System.currentTimeMillis()}.mp4"
         )
         videoCapture?.startRecording(
             VideoCapture.OutputFileOptions.Builder(videoFile).build(),
