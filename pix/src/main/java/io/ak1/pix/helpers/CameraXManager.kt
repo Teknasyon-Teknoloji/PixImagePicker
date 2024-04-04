@@ -277,7 +277,7 @@ class CameraXManager(
 
         // Create time-stamped output file to hold the image
         val photoFile = File(
-            getOutputDirectory(),
+            getOutputCacheDirectory(),
             SimpleDateFormat(
                 FILENAME_FORMAT, Locale.US
             ).format(System.currentTimeMillis()) + ".jpg"
@@ -310,7 +310,7 @@ class CameraXManager(
     @SuppressLint("RestrictedApi", "MissingPermission")
     fun takeVideo(callback: (Uri, String?) -> Unit) {
         val videoFile = File(
-            getOutputDirectory(),
+            getOutputCacheDirectory(),
             SimpleDateFormat(
                 FILENAME_FORMAT, Locale.US
             ).format(System.currentTimeMillis()) + ".mp4"
@@ -335,12 +335,12 @@ class CameraXManager(
         //videoCapture?.stopRecording()
     }
 
-    private fun getOutputDirectory(): File {
-        val mediaDir = requireActivity.externalMediaDirs.firstOrNull()?.let {
+    private fun getOutputCacheDirectory(): File {
+        val mediaDir = requireActivity.externalCacheDirs.firstOrNull()?.let {
             File(it, options.path).apply { mkdirs() }
         }
         return if (mediaDir != null && mediaDir.exists())
-            mediaDir else requireActivity.filesDir
+            mediaDir else requireActivity.cacheDir
     }
 
     /** Returns true if the device has an available back camera. False otherwise */

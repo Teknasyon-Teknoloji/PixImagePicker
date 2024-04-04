@@ -178,25 +178,27 @@ class CameraFragment(private val resultCallback: ((Results) -> Unit)? = null) : 
                 1 -> model.onBackPressed()
                 2 -> openGalleryScreen()
                 3 -> {
-                    var connection: MediaScannerConnection? = null
-                    var client: MediaScannerConnection.MediaScannerConnectionClient?
-                    client = object : MediaScannerConnection.MediaScannerConnectionClient {
-                        override fun onScanCompleted(path: String, uri: Uri) {
-                            connection?.disconnect()
-                            client = null
-                            model.selectionList.value?.add(Img(contentUrl = uri))
-                            model.returnObjects()
-
-                        }
-
-                        override fun onMediaScannerConnected() {
-                            connection?.scanFile(uri.path, null)
-                        }
-                    }
-                    connection = MediaScannerConnection(requireContext(), client)
-                    connection.apply {
-                        connect()
-                    }
+                    model.selectionList.value?.add(Img(contentUrl = uri))
+                    model.returnObjects()
+//                    var connection: MediaScannerConnection? = null
+//                    var client: MediaScannerConnection.MediaScannerConnectionClient?
+//                    client = object : MediaScannerConnection.MediaScannerConnectionClient {
+//                        override fun onScanCompleted(path: String, uri: Uri) {
+//                            connection?.disconnect()
+//                            client = null
+//                            model.selectionList.value?.add(Img(contentUrl = uri))
+//                            model.returnObjects()
+//
+//                        }
+//
+//                        override fun onMediaScannerConnected() {
+//                            connection?.scanFile(uri.path, null)
+//                        }
+//                    }
+//                    connection = MediaScannerConnection(requireContext(), client)
+//                    connection.apply {
+//                        connect()
+//                    }
                 }
             }
         }
