@@ -76,7 +76,7 @@ internal class LocalResourceManager(
                 synchronized(context) {
                     var pos = start
                     Log.e(TAG, "$className start $start till end $end")
-                    for (i in start until end) {
+                    for (i in start .. end) {
                         try {
                             val path = try {
                                 Uri.withAppendedPath(
