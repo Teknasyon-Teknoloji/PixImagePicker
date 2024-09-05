@@ -220,25 +220,14 @@ internal fun FragmentCameraBinding.setupClickControls(
 }
 
 internal fun FragmentImagePickerBinding.setupClickControls(callback: (Int, Uri) -> Unit) {
-    gridLayout.selectionOk.setOnClickListener { callback(0, Uri.EMPTY) }
     gridLayout.sendButton.setOnClickListener { callback(0, Uri.EMPTY) }
     gridLayout.selectionBack.setOnClickListener { callback(1, Uri.EMPTY) }
-    gridLayout.selectionCheck.setOnClickListener {
-        gridLayout.selectionCheck.hide()
-        callback(2, Uri.EMPTY)
-    }
-}
-
-fun FragmentImagePickerBinding.longSelectionStatus(enabled: Boolean) {
-    gridLayout.selectionCheck.isVisible = !enabled
 }
 
 fun FragmentImagePickerBinding.setSelectionText(fragmentActivity: FragmentActivity, size: Int = 0) {
     gridLayout.selectionCount.text = if (size == 0) {
-        gridLayout.selectionOk.hide()
         fragmentActivity.resources.getString(R.string.pix_tap_to_select)
     } else {
-        gridLayout.selectionOk.show()
         "$size ${fragmentActivity.resources.getString(R.string.pix_selected)}"
     }
     gridLayout.imgCount.text = size.toString()

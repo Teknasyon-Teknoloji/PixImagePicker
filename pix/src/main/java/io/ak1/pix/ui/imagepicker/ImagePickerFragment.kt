@@ -191,9 +191,6 @@ class ImagePickerFragment(private val resultCallback: ((Results) -> Unit)? = nul
             }
             binding.setSelectionText(requireActivity(), it.size)
         }
-        viewModel.longSelection.observe(requireActivity()) {
-            binding.longSelectionStatus(it)
-        }
         viewModel.callResults.observe(requireActivity()) { event ->
             event?.getContentIfNotHandledOrReturnNull()?.let { set ->
                 viewModel.changeSelectionList(HashSet())
